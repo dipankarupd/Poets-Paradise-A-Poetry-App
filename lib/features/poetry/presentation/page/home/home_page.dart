@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Popular List',
+                          'Latest List',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -80,7 +80,10 @@ class _HomePageState extends State<HomePage> {
                             poetry: state.poetries[index],
                           );
                         },
-                        itemCount: state.poetries.length,
+                        itemCount: state.poetries
+                            .getRange(state.poetries.length - 3,
+                                state.poetries.length)
+                            .length,
                       ),
                     ),
                     const SizedBox(height: 30),
@@ -99,6 +102,9 @@ class _HomePageState extends State<HomePage> {
                         itemBuilder: (context, index) {
                           return PoetryCategoryCard(
                             category: categoryList[index],
+                            poetries: state.poetries.where((p) {
+                              return p.categories.contains(categoryList[index]);
+                            }).toList(),
                           );
                         },
                         itemCount: categoryList.length,
@@ -131,9 +137,11 @@ class _HomePageState extends State<HomePage> {
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          return const AuthorListDisplay();
+                          return AuthorListDisplay(
+                            profile: state.authors[index],
+                          );
                         },
-                        itemCount: 5,
+                        itemCount: state.authors.length,
                       ),
                     ),
                   ],
@@ -142,7 +150,7 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         } else {
-          return Scaffold();
+          return const Scaffold();
         }
       },
     );

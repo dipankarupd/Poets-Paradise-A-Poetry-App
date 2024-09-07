@@ -131,4 +131,20 @@ class PoetryRemoteImpl implements PoetryRemoteSource {
       throw ServerException(message: e.toString());
     }
   }
+
+  @override
+  Future<List<ProfileModel>> getAllProfiles() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await firebaseFirestore.collection('users').get();
+      List<ProfileModel> profiles = querySnapshot.docs.map((e) {
+        final res = e.data() as Map<String, dynamic>;
+        return ProfileModel.fromMap(res);
+      }).toList();
+
+      return profiles;
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
 }

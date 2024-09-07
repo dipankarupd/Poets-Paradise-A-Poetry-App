@@ -15,4 +15,6 @@ abstract interface class PoetryRemoteSource {
   Future<String> uploadPoetryImage(File image);
 
   Future<List<PoetryModel>> getAllPoetries();
+
+  Future<List<ProfileModel>> getAllProfiles();
 }

@@ -1,19 +1,22 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:poets_paradise/features/poetry/domain/entity/poetry.dart';
 
 class PoetryCategoryCard extends StatelessWidget {
+  final List<Poetry> poetries;
   final String category;
   const PoetryCategoryCard({
-    Key? key,
+    super.key,
     required this.category,
-  }) : super(key: key);
+    required this.poetries,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -21,21 +24,24 @@ class PoetryCategoryCard extends StatelessWidget {
               width: 140,
               child: Text(
                 '$category poems',
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
               ),
             ),
             Row(
               children: [
                 IconButton(
                   onPressed: () {},
-                  icon: Icon(CupertinoIcons.arrow_right),
+                  icon: const Icon(CupertinoIcons.arrow_right),
                 ),
-                const Column(
+                Column(
                   children: [
-                    Text('Total Poems'),
+                    const Text('Total Poems'),
                     Text(
-                      '200',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      poetries.length.toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 )

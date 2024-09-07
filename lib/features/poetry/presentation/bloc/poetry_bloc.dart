@@ -8,6 +8,7 @@ import 'package:poets_paradise/features/auth/domain/usecase/current_user.dart';
 import 'package:poets_paradise/features/auth/domain/usecase/signout.dart';
 import 'package:poets_paradise/features/poetry/domain/entity/poetry.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_poetry.dart';
+import 'package:poets_paradise/features/poetry/domain/usecase/get_all_profiles.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/update_profile.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/upload_poetry.dart';
 
@@ -20,12 +21,14 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
   final UpdateProfile _updateProfile;
   final UploadPoetry _poetry;
   final GetAllPoetry _getAllPoetry;
+  final GetAllProfiles _getAllProfiles;
   PoetryBloc(
     this._currentUser,
     this._updateProfile,
     this._signOut,
     this._poetry,
     this._getAllPoetry,
+    this._getAllProfiles,
   ) : super(PoetryInitial()) {
     on<PoetryInitialEvent>(poetryInitialEvent);
 
@@ -70,7 +73,26 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
             (poetries) async {
               // Ensure event handler is still active before emitting success state
               if (!emit.isDone) {
-                emit(PoetryInitialState(profile: profile, poetries: poetries));
+                final profileResult = await _getAllProfiles(NoParams());
+
+                await profileResult.fold(
+                  (l) async {
+                    if (!emit.isDone) {
+                      emit(PoetryFailedState(message: l.message));
+                    }
+                  },
+                  (profiles) async {
+                    if (!emit.isDone) {
+                      emit(
+                        PoetryInitialState(
+                          profile: profile,
+                          poetries: poetries,
+                          authors: profiles,
+                        ),
+                      );
+                    }
+                  },
+                );
               }
             },
           );

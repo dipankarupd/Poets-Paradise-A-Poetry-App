@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:poets_paradise/cores/entities/profile.dart';
 
 class AuthorListDisplay extends StatelessWidget {
-  const AuthorListDisplay({super.key});
+  Profile profile;
+  AuthorListDisplay({super.key, required this.profile});
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(8.0),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
           CircleAvatar(
             radius: 36,
-            backgroundColor: Colors.green,
+            backgroundImage: profile.dp.isEmpty
+                ? const AssetImage('assets/images/poetry.jpg')
+                : NetworkImage(profile.dp),
           ),
           Text(
-            'username',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            profile.username,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           )
         ],
       ),
