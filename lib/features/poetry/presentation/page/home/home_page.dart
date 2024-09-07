@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:poets_paradise/cores/palette/app_palette.dart';
 import 'package:poets_paradise/cores/utils/loader.dart';
 import 'package:poets_paradise/cores/utils/poetry_categories.dart';
 import 'package:poets_paradise/features/poetry/presentation/bloc/poetry_bloc.dart';
+import 'package:poets_paradise/features/poetry/presentation/page/home/all_latest_list.dart';
 import 'package:poets_paradise/features/poetry/presentation/widget/author_list_display.dart';
 import 'package:poets_paradise/features/poetry/presentation/widget/home_header.dart';
 import 'package:poets_paradise/features/poetry/presentation/widget/poetry_category_card.dart';
@@ -50,22 +54,30 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 30),
                     const CustomSearchBar(),
                     const SizedBox(height: 30),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'Latest List',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
-                          'See all',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: AppPallete.greyColor,
+                        GestureDetector(
+                          onTap: () {
+                            PersistentNavBarNavigator.pushNewScreen(
+                              context,
+                              screen: AllLatestList(poetries: state.poetries),
+                            );
+                          },
+                          child: const Text(
+                            'See all',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppPallete.greyColor,
+                            ),
                           ),
                         ),
                       ],
@@ -111,22 +123,25 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'Top Authors',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
-                          'See all',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: AppPallete.greyColor,
+                        GestureDetector(
+                          onTap: () {},
+                          child: const Text(
+                            'See all',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppPallete.greyColor,
+                            ),
                           ),
                         ),
                       ],

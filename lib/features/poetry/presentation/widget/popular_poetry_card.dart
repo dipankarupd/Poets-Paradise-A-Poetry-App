@@ -22,7 +22,7 @@ class PopularPoetryCard extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: SizedBox(
               width: 120,
-              height: double.infinity,
+              height: 140,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
@@ -34,7 +34,7 @@ class PopularPoetryCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(8),
-            child: Expanded(
+            child: Flexible(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
