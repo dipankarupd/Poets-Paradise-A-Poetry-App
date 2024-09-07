@@ -13,6 +13,7 @@ import 'package:poets_paradise/features/poetry/data/repository/poetry_repo_impl.
 import 'package:poets_paradise/features/poetry/data/source/poetry_remote.dart';
 import 'package:poets_paradise/features/poetry/data/source/poetry_remote_impl.dart';
 import 'package:poets_paradise/features/poetry/domain/repository/poetry_repo.dart';
+import 'package:poets_paradise/features/poetry/domain/usecase/get_all_poetry.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/update_profile.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/upload_poetry.dart';
 import 'package:poets_paradise/features/poetry/presentation/bloc/poetry_bloc.dart';
@@ -57,8 +58,9 @@ void _initPoetry() {
     ..registerFactory<UploadPoetry>(() => UploadPoetry(repo: serviceLocator()))
     ..registerFactory<UpdateProfile>(
         () => UpdateProfile(repo: serviceLocator()))
+    ..registerFactory<GetAllPoetry>(() => GetAllPoetry(repo: serviceLocator()))
     ..registerLazySingleton<PoetryBloc>(
       () => PoetryBloc(serviceLocator(), serviceLocator(), serviceLocator(),
-          serviceLocator()),
+          serviceLocator(), serviceLocator()),
     );
 }

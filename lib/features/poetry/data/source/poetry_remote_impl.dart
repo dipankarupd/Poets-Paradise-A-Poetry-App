@@ -112,4 +112,23 @@ class PoetryRemoteImpl implements PoetryRemoteSource {
           .update(updatedProfile.toMap());
     }
   }
+
+  @override
+  Future<List<PoetryModel>> getAllPoetries() async {
+    try {
+      // get the snapshot
+      QuerySnapshot snapshot =
+          await firebaseFirestore.collection('poetries').get();
+
+      // get the data from snapshot
+      List<PoetryModel> data = snapshot.docs.map((doc) {
+        final res = doc.data() as Map<String, dynamic>;
+        return PoetryModel.fromMap(res);
+      }).toList();
+
+      return data;
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
 }

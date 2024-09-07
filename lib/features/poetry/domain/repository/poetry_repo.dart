@@ -22,4 +22,6 @@ abstract interface class PoetryRepo {
     final List<String> comments,
     final DateTime createdAt,
   );
+
+  Future<Either<Failure, List<Poetry>>> getAllPoetry();
 }

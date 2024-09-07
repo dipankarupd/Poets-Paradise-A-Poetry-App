@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
               child: Loader(),
             ),
           );
-        } else {
+        } else if (state is PoetryInitialState) {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: AppPallete.backgroundColor,
@@ -76,13 +76,15 @@ class _HomePageState extends State<HomePage> {
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          return const PopularPoetryCard();
+                          return PopularPoetryCard(
+                            poetry: state.poetries[index],
+                          );
                         },
-                        itemCount: 3,
+                        itemCount: state.poetries.length,
                       ),
                     ),
                     const SizedBox(height: 30),
-                    Text(
+                    const Text(
                       'Categories',
                       style: TextStyle(
                         fontSize: 18,
@@ -102,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                         itemCount: categoryList.length,
                       ),
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -139,6 +141,8 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           );
+        } else {
+          return Scaffold();
         }
       },
     );

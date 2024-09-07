@@ -15,8 +15,10 @@ final class PoetryInitial extends PoetryState {}
 
 class PoetryInitialState extends PoetryState {
   final Profile profile;
+  final List<Poetry> poetries;
   PoetryInitialState({
     required this.profile,
+    required this.poetries,
   });
 }
 

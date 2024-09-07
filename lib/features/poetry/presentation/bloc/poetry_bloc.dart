@@ -7,6 +7,7 @@ import 'package:poets_paradise/cores/usecases/use_case.dart';
 import 'package:poets_paradise/features/auth/domain/usecase/current_user.dart';
 import 'package:poets_paradise/features/auth/domain/usecase/signout.dart';
 import 'package:poets_paradise/features/poetry/domain/entity/poetry.dart';
+import 'package:poets_paradise/features/poetry/domain/usecase/get_all_poetry.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/update_profile.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/upload_poetry.dart';
 
@@ -18,11 +19,13 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
   final SignOut _signOut;
   final UpdateProfile _updateProfile;
   final UploadPoetry _poetry;
+  final GetAllPoetry _getAllPoetry;
   PoetryBloc(
     this._currentUser,
     this._updateProfile,
     this._signOut,
     this._poetry,
+    this._getAllPoetry,
   ) : super(PoetryInitial()) {
     on<PoetryInitialEvent>(poetryInitialEvent);
 
@@ -37,17 +40,43 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
     on<PoetryUploadPoemEvent>(poetryUploadPoemEvent);
   }
 
-  FutureOr<void> poetryInitialEvent(
+  Future<void> poetryInitialEvent(
     PoetryInitialEvent event,
     Emitter<PoetryState> emit,
   ) async {
     emit(PoetryInitialLoadingState());
+
     final res = await _currentUser.call(NoParams());
 
-    res.fold(
-      (l) => emit(PoetryFailedState(message: l.message)),
-      (r) => emit(PoetryInitialState(profile: r)),
-    );
+    // Ensure event handler is still active before emitting new state
+    if (!emit.isDone) {
+      await res.fold(
+        (l) async {
+          // Ensure event handler is still active before emitting error state
+          if (!emit.isDone) {
+            emit(PoetryFailedState(message: l.message));
+          }
+        },
+        (profile) async {
+          final poetryResult = await _getAllPoetry(NoParams());
+
+          await poetryResult.fold(
+            (l) async {
+              // Ensure event handler is still active before emitting error state
+              if (!emit.isDone) {
+                emit(PoetryFailedState(message: l.message));
+              }
+            },
+            (poetries) async {
+              // Ensure event handler is still active before emitting success state
+              if (!emit.isDone) {
+                emit(PoetryInitialState(profile: profile, poetries: poetries));
+              }
+            },
+          );
+        },
+      );
+    }
   }
 
   FutureOr<void> poetryHomeProfileButtonPressedEvent(

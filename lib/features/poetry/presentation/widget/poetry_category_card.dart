@@ -30,7 +30,7 @@ class PoetryCategoryCard extends StatelessWidget {
                   onPressed: () {},
                   icon: Icon(CupertinoIcons.arrow_right),
                 ),
-                Column(
+                const Column(
                   children: [
                     Text('Total Poems'),
                     Text(

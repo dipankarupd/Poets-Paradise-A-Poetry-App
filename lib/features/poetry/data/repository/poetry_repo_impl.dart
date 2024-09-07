@@ -60,4 +60,14 @@ class PoetryRepoImpl implements PoetryRepo {
       return left(Failure(message: e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, List<Poetry>>> getAllPoetry() async {
+    try {
+      final res = await source.getAllPoetries();
+      return right(res);
+    } on ServerException catch (e) {
+      return left(Failure(message: e.message));
+    }
+  }
 }

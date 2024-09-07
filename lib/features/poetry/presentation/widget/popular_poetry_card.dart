@@ -1,8 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+
 import 'package:poets_paradise/cores/palette/app_palette.dart';
+import 'package:poets_paradise/features/poetry/domain/entity/poetry.dart';
+import 'package:poets_paradise/features/poetry/presentation/page/read_poetry_page.dart';
 
 class PopularPoetryCard extends StatelessWidget {
-  const PopularPoetryCard({super.key});
+  final Poetry poetry;
+  const PopularPoetryCard({
+    super.key,
+    required this.poetry,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -11,12 +20,15 @@ class PopularPoetryCard extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                'assets/images/poetry.jpg',
-
-                fit: BoxFit.cover, // Ensure image fits well
+            child: SizedBox(
+              width: 120,
+              height: double.infinity,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  poetry.image,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -27,11 +39,11 @@ class PopularPoetryCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 220,
-                    child: const Text(
-                      'In the wonderful world who cares what to do I dont know',
-                      style: TextStyle(
+                    child: Text(
+                      poetry.title,
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
@@ -39,11 +51,11 @@ class PopularPoetryCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     width: 220,
-                    child: const Text(
-                      'Author',
-                      style: TextStyle(
+                    child: Text(
+                      poetry.author.username,
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
@@ -52,7 +64,10 @@ class PopularPoetryCard extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      PersistentNavBarNavigator.pushNewScreen(context,
+                          screen: ReadPoetryPage(poetry: poetry));
+                    },
                     child: const Text(
                       'Read',
                       style: TextStyle(
