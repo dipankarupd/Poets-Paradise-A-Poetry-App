@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "725423291545",
+    "project_id": "poetry-app-abcb3",
+    "storage_bucket": "poetry-app-abcb3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725423291545:android:108a90e46d4069aa09cc08",
+        "android_client_info": {
+          "package_name": "com.example.poets_paradise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7DFJ30V-3ukkATJbD9cdVRiI9yADrikg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
