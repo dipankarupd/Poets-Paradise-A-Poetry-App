@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:poets_paradise/cores/palette/app_palette.dart';
+import 'package:poets_paradise/cores/utils/format_time.dart';
 import 'package:poets_paradise/features/poetry/domain/entity/poetry.dart';
 import 'package:poets_paradise/features/poetry/presentation/widget/poetry_row_icons.dart';
 
@@ -46,9 +47,19 @@ class ReadPoetryPage extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Text(
-                poetry.created_at.toIso8601String(),
-                style: const TextStyle(fontSize: 18),
+              RichText(
+                text: TextSpan(
+                    text: 'Created At: ',
+                    style: const TextStyle(fontSize: 16, color: Colors.black),
+                    children: [
+                      TextSpan(
+                          text: formatTime(poetry.created_at),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          )),
+                    ]),
               ),
               const SizedBox(
                 height: 20,
@@ -101,8 +112,11 @@ class ReadPoetryPage extends StatelessWidget {
               ),
               Text(
                 poetry.content,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                  height: 1.8,
+                ),
               )
             ],
           ),
