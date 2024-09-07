@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:poets_paradise/cores/entities/profile.dart';
 
 class AuthorListDisplay extends StatelessWidget {
-  Profile profile;
-  AuthorListDisplay({super.key, required this.profile});
+  final Profile profile;
+  const AuthorListDisplay({super.key, required this.profile});
 
   @override
   Widget build(BuildContext context) {
