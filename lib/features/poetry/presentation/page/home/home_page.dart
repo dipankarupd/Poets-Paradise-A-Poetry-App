@@ -8,6 +8,7 @@ import 'package:poets_paradise/cores/utils/loader.dart';
 import 'package:poets_paradise/cores/utils/poetry_categories.dart';
 import 'package:poets_paradise/features/poetry/presentation/bloc/poetry_bloc.dart';
 import 'package:poets_paradise/features/poetry/presentation/page/home/all_latest_list.dart';
+import 'package:poets_paradise/features/poetry/presentation/page/profile/all_authors_page.dart';
 import 'package:poets_paradise/features/poetry/presentation/widget/author_list_display.dart';
 import 'package:poets_paradise/features/poetry/presentation/widget/home_header.dart';
 import 'package:poets_paradise/features/poetry/presentation/widget/poetry_category_card.dart';
@@ -134,7 +135,12 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            PersistentNavBarNavigator.pushNewScreen(
+                              context,
+                              screen: AuthorsViewPage(authors: state.authors),
+                            );
+                          },
                           child: const Text(
                             'See all',
                             style: TextStyle(

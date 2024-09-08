@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:poets_paradise/features/poetry/domain/entity/poetry.dart';
+import 'package:poets_paradise/features/poetry/presentation/page/home/all_latest_list.dart';
 
 class PoetryCategoryCard extends StatelessWidget {
   final List<Poetry> poetries;
@@ -33,7 +35,13 @@ class PoetryCategoryCard extends StatelessWidget {
             Row(
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    PersistentNavBarNavigator.pushNewScreen(context,
+                        screen: AllLatestList(
+                          poetries: poetries,
+                          categories: category,
+                        ));
+                  },
                   icon: const Icon(CupertinoIcons.arrow_right),
                 ),
                 Column(

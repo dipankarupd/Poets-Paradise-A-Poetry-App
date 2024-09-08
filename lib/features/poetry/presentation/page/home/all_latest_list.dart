@@ -5,7 +5,8 @@ import 'package:poets_paradise/features/poetry/presentation/widget/popular_poetr
 
 class AllLatestList extends StatelessWidget {
   final List<Poetry> poetries;
-  const AllLatestList({super.key, required this.poetries});
+  final String? categories;
+  const AllLatestList({super.key, required this.poetries, this.categories});
 
   @override
   Widget build(BuildContext context) {
@@ -16,22 +17,28 @@ class AllLatestList extends StatelessWidget {
               PersistentNavBarNavigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back)),
-        title: const Text('Poetries'),
+        title: categories != null
+            ? Text('$categories Poems')
+            : const Text('Poetries'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: ListView.builder(
-          itemCount: poetries.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(8),
-              child: SizedBox(
-                  height: 140,
-                  child: PopularPoetryCard(poetry: poetries[index])),
-            );
-          },
-        ),
-      ),
+      body: poetries.isEmpty
+          ? const Center(
+              child: Text('No Poems in this category'),
+            )
+          : Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListView.builder(
+                itemCount: poetries.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: SizedBox(
+                        height: 140,
+                        child: PopularPoetryCard(poetry: poetries[index])),
+                  );
+                },
+              ),
+            ),
     );
   }
 }
