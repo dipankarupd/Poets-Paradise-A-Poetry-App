@@ -17,56 +17,59 @@ class _EachAuthorRowState extends State<EachAuthorRow> {
   bool isFollowed = false;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        GestureDetector(
-          onTap: () {
-            PersistentNavBarNavigator.pushNewScreen(
-              context,
-              screen: ProfilePage(profile: widget.author),
-            );
-          },
-          child: CircleAvatar(
-            radius: 36,
-            backgroundImage: NetworkImage(widget.author.dp),
-          ),
-        ),
-        Text(
-          widget.author.username,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-        ),
-        GestureDetector(
-          onTap: () {
-            FirebaseAuth auth = FirebaseAuth.instance;
-            if (auth.currentUser!.uid == widget.author.userId) {
-              return;
-            }
-            isFollowed = !isFollowed;
-            setState(() {});
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color:
-                  !isFollowed ? AppPallete.purpleColor : AppPallete.greyColor,
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () {
+              PersistentNavBarNavigator.pushNewScreen(
+                context,
+                screen: ProfilePage(profile: widget.author),
+              );
+            },
+            child: CircleAvatar(
+              radius: 36,
+              backgroundImage: NetworkImage(widget.author.dp),
             ),
-            width: 100,
-            padding: const EdgeInsets.all(8),
-            child: isFollowed
-                ? const Center(
-                    child: Text(
-                    'Following',
-                    style: TextStyle(color: AppPallete.whiteColor),
-                  ))
-                : const Center(
-                    child: Text(
-                    'Follow',
-                    style: TextStyle(color: AppPallete.whiteColor),
-                  )),
           ),
-        )
-      ],
+          Text(
+            widget.author.username,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+          ),
+          GestureDetector(
+            onTap: () {
+              FirebaseAuth auth = FirebaseAuth.instance;
+              if (auth.currentUser!.uid == widget.author.userId) {
+                return;
+              }
+              isFollowed = !isFollowed;
+              setState(() {});
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color:
+                    !isFollowed ? AppPallete.purpleColor : AppPallete.greyColor,
+              ),
+              width: 100,
+              padding: const EdgeInsets.all(8),
+              child: isFollowed
+                  ? const Center(
+                      child: Text(
+                      'Following',
+                      style: TextStyle(color: AppPallete.whiteColor),
+                    ))
+                  : const Center(
+                      child: Text(
+                      'Follow',
+                      style: TextStyle(color: AppPallete.whiteColor),
+                    )),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

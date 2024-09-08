@@ -25,6 +25,8 @@ class _ProfilePageState extends State<ProfilePage> {
     context.read<PoetryBloc>().add(PoetryInitialEvent());
   }
 
+  bool isFollowing = false;
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PoetryBloc, PoetryState>(
@@ -48,6 +50,8 @@ class _ProfilePageState extends State<ProfilePage> {
       },
       builder: (context, state) {
         if (state is PoetryInitialState) {
+          bool isCurrentUser() =>
+              (widget.profile.userId == state.profile.userId);
           return Scaffold(
             appBar: AppBar(
               backgroundColor: AppPallete.backgroundColor,
@@ -60,11 +64,16 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               title: const Text('Profile'),
               actions: [
-                IconButton(
-                    onPressed: () {
-                      context.read<PoetryBloc>().add(ProfileSignoutEvent());
-                    },
-                    icon: const Icon(Icons.logout))
+                isCurrentUser()
+                    ? IconButton(
+                        onPressed: () {
+                          context.read<PoetryBloc>().add(
+                                ProfileSignoutEvent(),
+                              );
+                        },
+                        icon: const Icon(Icons.logout),
+                      )
+                    : const SizedBox()
               ],
             ),
             body: Padding(
@@ -77,13 +86,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       CircleAvatar(
                         radius: 50,
-                        backgroundImage: NetworkImage(state.profile.dp),
+                        backgroundImage: NetworkImage(widget.profile.dp),
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${state.profile.poetries.length}',
+                            '${widget.profile.poetries.length}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const Text(
@@ -109,7 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${state.profile.followers.length}',
+                            '${widget.profile.followers.length}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const Text(
@@ -129,14 +138,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${state.profile.username}',
+                          widget.profile.username,
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          '${state.profile.bio}',
+                          widget.profile.bio,
                           style: const TextStyle(fontSize: 16),
                           textAlign: TextAlign.start,
                         ),
@@ -148,36 +157,62 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        context
-                            .read<PoetryBloc>()
-                            .add(PoetryProfileEditButtonPressedEvent());
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: const Color.fromARGB(255, 188, 187, 187),
-                        ),
-                        child: const Center(
-                            child: Text(
-                          'Edit Profile',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                    child: isCurrentUser()
+                        ? GestureDetector(
+                            onTap: () {
+                              context
+                                  .read<PoetryBloc>()
+                                  .add(PoetryProfileEditButtonPressedEvent());
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: const Color.fromARGB(255, 188, 187, 187),
+                              ),
+                              child: const Center(
+                                  child: Text(
+                                'Edit Profile',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )),
+                            ),
+                          )
+                        : GestureDetector(
+                            onTap: () {
+                              isFollowing = !isFollowing;
+                              setState(() {});
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: isFollowing
+                                    ? AppPallete.greyColor
+                                    : AppPallete.purpleColor,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  isFollowing ? 'Following' : 'Follow',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: AppPallete.whiteColor),
+                                ),
+                              ),
+                            ),
                           ),
-                        )),
-                      ),
-                    ),
                   ),
                   const SizedBox(
                     height: 22,
                   ),
                   Expanded(
                     child: GridView.builder(
-                        itemCount: state.profile.poetries.length,
+                        itemCount: widget.profile.poetries.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3),
@@ -192,7 +227,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           //   ),
                           // );
                           return PoemDisplayCard(
-                              poem: state.profile.poetries[index]);
+                              poem: widget.profile.poetries[index]);
                         }),
                   )
                 ],
