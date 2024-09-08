@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:poets_paradise/cores/entities/profile.dart';
 import 'package:poets_paradise/cores/palette/app_palette.dart';
+import 'package:poets_paradise/features/poetry/presentation/page/profile/profile_page.dart';
 
 class EachAuthorRow extends StatefulWidget {
   final Profile author;
@@ -18,9 +20,17 @@ class _EachAuthorRowState extends State<EachAuthorRow> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CircleAvatar(
-          radius: 36,
-          backgroundImage: NetworkImage(widget.author.dp),
+        GestureDetector(
+          onTap: () {
+            PersistentNavBarNavigator.pushNewScreen(
+              context,
+              screen: ProfilePage(profile: widget.author),
+            );
+          },
+          child: CircleAvatar(
+            radius: 36,
+            backgroundImage: NetworkImage(widget.author.dp),
+          ),
         ),
         Text(
           widget.author.username,

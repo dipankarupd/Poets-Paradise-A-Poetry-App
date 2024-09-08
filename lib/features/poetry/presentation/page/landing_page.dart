@@ -5,7 +5,6 @@ import 'package:poets_paradise/cores/palette/app_palette.dart';
 import 'package:poets_paradise/features/poetry/presentation/page/add/add_page.dart';
 import 'package:poets_paradise/features/poetry/presentation/page/home/home_page.dart';
 import 'package:poets_paradise/features/poetry/presentation/page/like/likes_page.dart';
-import 'package:poets_paradise/features/poetry/presentation/page/profile/profile_page.dart';
 import 'package:poets_paradise/features/poetry/presentation/page/save/save_page.dart';
 
 class LandingPage extends StatelessWidget {
@@ -19,7 +18,7 @@ class LandingPage extends StatelessWidget {
         const HomePage(),
         const LikesPage(),
         const AddPage(),
-        const ProfilePage(),
+        const SavePage(),
         const SavePage(),
       ];
     }

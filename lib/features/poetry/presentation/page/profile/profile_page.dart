@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:poets_paradise/config/routes.dart';
+import 'package:poets_paradise/cores/entities/profile.dart';
 import 'package:poets_paradise/cores/palette/app_palette.dart';
 import 'package:poets_paradise/cores/utils/show_snackbar.dart';
 import 'package:poets_paradise/features/poetry/presentation/bloc/poetry_bloc.dart';
@@ -9,7 +10,8 @@ import 'package:poets_paradise/features/poetry/presentation/page/profile/edit_pr
 import 'package:poets_paradise/features/poetry/presentation/widget/poem_display_card.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final Profile profile;
+  const ProfilePage({super.key, required this.profile});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();

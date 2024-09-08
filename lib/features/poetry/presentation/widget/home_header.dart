@@ -22,13 +22,13 @@ class _HomePageHeaderState extends State<HomePageHeader> {
   Widget build(BuildContext context) {
     return BlocConsumer<PoetryBloc, PoetryState>(
       listener: (context, state) {
-        if (state is PoetryHomeNavigateToProfileState) {
-          PersistentNavBarNavigator.pushNewScreen(
-            context,
-            screen: const ProfilePage(),
-          );
-          // Navigator.pushNamed(context, AppRoute.newPage);
-        }
+        // if (state is PoetryHomeNavigateToProfileState) {
+        //   PersistentNavBarNavigator.pushNewScreen(
+        //     context,
+        //     screen: const ProfilePage(),
+        //   );
+        //   // Navigator.pushNamed(context, AppRoute.newPage);
+        // }
       },
       builder: (context, state) {
         if (state is PoetryInitialState) {
@@ -42,9 +42,16 @@ class _HomePageHeaderState extends State<HomePageHeader> {
               ),
               GestureDetector(
                 onTap: () {
-                  context
-                      .read<PoetryBloc>()
-                      .add(PoetryHomeProfileButtonPressedEvent());
+                  // context
+                  //     .read<PoetryBloc>()
+                  //     .add(PoetryHomeProfileButtonPressedEvent());
+
+                  PersistentNavBarNavigator.pushNewScreen(
+                    context,
+                    screen: ProfilePage(
+                      profile: state.profile,
+                    ),
+                  );
                 },
                 child: CircleAvatar(
                   radius: 30,

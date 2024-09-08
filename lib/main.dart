@@ -10,7 +10,6 @@ import 'package:poets_paradise/features/auth/presentation/page/sign_in_page.dart
 import 'package:poets_paradise/features/auth/presentation/page/sign_up_page.dart';
 import 'package:poets_paradise/features/poetry/presentation/bloc/poetry_bloc.dart';
 import 'package:poets_paradise/features/poetry/presentation/page/landing_page.dart';
-import 'package:poets_paradise/features/poetry/presentation/page/profile/profile_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,7 +44,7 @@ class MyApp extends StatelessWidget {
         AppRoute.signin: (context) => const SignInPage(),
         AppRoute.signup: (context) => const SignUpPage(),
         AppRoute.landing: (context) => LandingPage(),
-        AppRoute.newPage: (context) => const ProfilePage(),
+        // AppRoute.newPage: (context) => const ProfilePage(),
       },
     );
   }
