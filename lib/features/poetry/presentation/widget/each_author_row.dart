@@ -28,8 +28,8 @@ class _EachAuthorRowState extends State<EachAuthorRow> {
         ),
         GestureDetector(
           onTap: () {
-            FirebaseAuth _auth = FirebaseAuth.instance;
-            if (_auth.currentUser!.uid == widget.author.userId) {
+            FirebaseAuth auth = FirebaseAuth.instance;
+            if (auth.currentUser!.uid == widget.author.userId) {
               return;
             }
             isFollowed = !isFollowed;
