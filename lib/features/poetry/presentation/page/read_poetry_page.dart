@@ -8,7 +8,14 @@ import 'package:poets_paradise/features/poetry/presentation/widget/poetry_row_ic
 
 class ReadPoetryPage extends StatelessWidget {
   final Poetry poetry;
-  const ReadPoetryPage({super.key, required this.poetry});
+  final bool isLiked;
+  final bool isSaved;
+  const ReadPoetryPage({
+    super.key,
+    required this.poetry,
+    required this.isLiked,
+    required this.isSaved,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -78,32 +85,47 @@ class ReadPoetryPage extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   RowIcons(
-                    unPressedIcon: Icon(CupertinoIcons.heart),
+                    unPressedIcon: isLiked
+                        ? const Icon(
+                            CupertinoIcons.heart_fill,
+                            color: AppPallete.purpleColor,
+                          )
+                        : Icon(CupertinoIcons.heart),
                     label: 'Like',
-                    pressedIcon: Icon(
-                      CupertinoIcons.heart_fill,
-                      color: AppPallete.purpleColor,
-                    ),
+                    pressedIcon: isLiked
+                        ? const Icon(CupertinoIcons.heart)
+                        : const Icon(
+                            CupertinoIcons.heart_fill,
+                            color: AppPallete.purpleColor,
+                          ),
+                    poetry: poetry,
                   ),
                   RowIcons(
-                    unPressedIcon: Icon(Icons.comment_outlined),
+                    unPressedIcon: const Icon(Icons.comment_outlined),
                     label: 'Comment',
-                    pressedIcon: Icon(
+                    pressedIcon: const Icon(
                       Icons.comment,
                       color: AppPallete.purpleColor,
                     ),
+                    poetry: poetry,
                   ),
                   RowIcons(
-                    unPressedIcon: Icon(Icons.bookmark_outline),
+                    unPressedIcon: isSaved
+                        ? const Icon(
+                            Icons.bookmark,
+                            color: AppPallete.purpleColor,
+                          )
+                        : const Icon(Icons.bookmark_outline),
                     label: 'Save',
-                    pressedIcon: Icon(
+                    pressedIcon: const Icon(
                       Icons.bookmark,
                       color: AppPallete.purpleColor,
                     ),
+                    poetry: poetry,
                   ),
                 ],
               ),

@@ -80,4 +80,25 @@ class PoetryRepoImpl implements PoetryRepo {
       return left(Failure(message: e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, Unit>> addToSaved(Poetry poetry) async {
+    try {
+      PoetryModel poem = PoetryModel(
+        id: poetry.id,
+        title: poetry.title,
+        content: poetry.content,
+        image: poetry.image,
+        categories: poetry.categories,
+        author: poetry.author as ProfileModel,
+        likes: poetry.likes,
+        comments: poetry.comments,
+        created_at: poetry.created_at,
+      );
+      await source.addToSaved(poem);
+      return right(unit);
+    } on ServerException catch (e) {
+      return left(Failure(message: e.message));
+    }
+  }
 }

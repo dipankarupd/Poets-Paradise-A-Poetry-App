@@ -13,6 +13,7 @@ import 'package:poets_paradise/features/poetry/data/repository/poetry_repo_impl.
 import 'package:poets_paradise/features/poetry/data/source/poetry_remote.dart';
 import 'package:poets_paradise/features/poetry/data/source/poetry_remote_impl.dart';
 import 'package:poets_paradise/features/poetry/domain/repository/poetry_repo.dart';
+import 'package:poets_paradise/features/poetry/domain/usecase/add_to_saved.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_poetry.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_profiles.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/update_profile.dart';
@@ -55,15 +56,32 @@ void _initPoetry() {
   serviceLocator
     ..registerFactory<PoetryRemoteSource>(() => PoetryRemoteImpl())
     ..registerFactory<PoetryRepo>(
-        () => PoetryRepoImpl(source: serviceLocator()))
-    ..registerFactory<UploadPoetry>(() => UploadPoetry(repo: serviceLocator()))
+      () => PoetryRepoImpl(source: serviceLocator()),
+    )
+    ..registerFactory<UploadPoetry>(
+      () => UploadPoetry(repo: serviceLocator()),
+    )
     ..registerFactory<UpdateProfile>(
-        () => UpdateProfile(repo: serviceLocator()))
-    ..registerFactory<GetAllPoetry>(() => GetAllPoetry(repo: serviceLocator()))
+      () => UpdateProfile(repo: serviceLocator()),
+    )
+    ..registerFactory<GetAllPoetry>(
+      () => GetAllPoetry(repo: serviceLocator()),
+    )
     ..registerFactory<GetAllProfiles>(
-        () => GetAllProfiles(repo: serviceLocator()))
+      () => GetAllProfiles(repo: serviceLocator()),
+    )
+    ..registerFactory<UpdateSaved>(
+      () => UpdateSaved(repo: serviceLocator()),
+    )
     ..registerLazySingleton<PoetryBloc>(
-      () => PoetryBloc(serviceLocator(), serviceLocator(), serviceLocator(),
-          serviceLocator(), serviceLocator(), serviceLocator()),
+      () => PoetryBloc(
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+      ),
     );
 }

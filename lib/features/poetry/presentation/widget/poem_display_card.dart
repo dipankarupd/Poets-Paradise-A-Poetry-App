@@ -6,7 +6,14 @@ import 'package:poets_paradise/features/poetry/presentation/page/read_poetry_pag
 
 class PoemDisplayCard extends StatelessWidget {
   final Poetry poem;
-  const PoemDisplayCard({super.key, required this.poem});
+  final bool isLiked;
+  final bool isSaved;
+  const PoemDisplayCard({
+    super.key,
+    required this.poem,
+    required this.isLiked,
+    required this.isSaved,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +21,11 @@ class PoemDisplayCard extends StatelessWidget {
       onTap: () {
         PersistentNavBarNavigator.pushNewScreen(
           context,
-          screen: ReadPoetryPage(poetry: poem),
+          screen: ReadPoetryPage(
+            poetry: poem,
+            isLiked: isLiked,
+            isSaved: isSaved,
+          ),
         );
       },
       child: Container(

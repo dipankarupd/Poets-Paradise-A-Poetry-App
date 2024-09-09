@@ -8,9 +8,13 @@ import 'package:poets_paradise/features/poetry/presentation/page/read_poetry_pag
 
 class PopularPoetryCard extends StatelessWidget {
   final Poetry poetry;
+  final bool isLiked;
+  final bool isSaved;
   const PopularPoetryCard({
     super.key,
     required this.poetry,
+    required this.isLiked,
+    required this.isSaved,
   });
 
   @override
@@ -65,8 +69,14 @@ class PopularPoetryCard extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      PersistentNavBarNavigator.pushNewScreen(context,
-                          screen: ReadPoetryPage(poetry: poetry));
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: ReadPoetryPage(
+                          poetry: poetry,
+                          isLiked: isLiked,
+                          isSaved: isSaved,
+                        ),
+                      );
                     },
                     child: const Text(
                       'Read',

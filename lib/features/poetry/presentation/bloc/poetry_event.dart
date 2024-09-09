@@ -33,13 +33,20 @@ class PoetryUploadPoemEvent extends PoetryEvent {
   final List<String> comments;
   final DateTime createdAt;
 
-  PoetryUploadPoemEvent(
-      {required this.image,
-      required this.author,
-      required this.title,
-      required this.content,
-      required this.categories,
-      required this.likes,
-      required this.comments,
-      required this.createdAt});
+  PoetryUploadPoemEvent({
+    required this.image,
+    required this.author,
+    required this.title,
+    required this.content,
+    required this.categories,
+    required this.likes,
+    required this.comments,
+    required this.createdAt,
+  });
+}
+
+class PoetrySaveButtonPressEvent extends PoetryEvent {
+  final Poetry poetry;
+
+  PoetrySaveButtonPressEvent({required this.poetry});
 }

@@ -147,4 +147,37 @@ class PoetryRemoteImpl implements PoetryRemoteSource {
       throw ServerException(message: e.toString());
     }
   }
+
+  @override
+  Future<void> addToSaved(PoetryModel poetry) async {
+    try {
+      User? user = auth.currentUser;
+      if (user == null) {
+        throw ServerException(message: 'No user logged in');
+      }
+
+      final ref =
+          await firebaseFirestore.collection('users').doc(user.uid).get();
+      final data = ref.data();
+
+      if (data == null) {
+        throw ServerException(message: 'No data available');
+      }
+
+      ProfileModel profile = ProfileModel.fromMap(data);
+      List<PoetryModel> saved = profile.savedPoetries as List<PoetryModel>;
+      if (saved.any((p) => p.id == poetry.id)) {
+        saved.removeWhere((p) => p.id == poetry.id);
+      } else {
+        saved.add(poetry);
+      }
+      final updatedProfile = profile.copyWith(savedPoetries: saved);
+      await firebaseFirestore
+          .collection('users')
+          .doc(user.uid)
+          .update(updatedProfile.toMap());
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
 }

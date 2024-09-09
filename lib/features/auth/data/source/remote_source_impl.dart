@@ -48,6 +48,7 @@ class AuthRemoteSourceImpl implements AuthRemoteSource {
         followers: [],
         following: [],
         poetries: [],
+        savedPoetries: [],
       );
 
       await ref.doc(userId).set(user.toMap());

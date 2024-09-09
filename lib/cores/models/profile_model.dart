@@ -11,10 +11,12 @@ class ProfileModel extends Profile {
     required List<ProfileModel> followers,
     required List<ProfileModel> following,
     required List<PoetryModel> poetries,
+    required List<PoetryModel> savedPoetries,
   }) : super(
           followers: followers,
           following: following,
           poetries: poetries,
+          savedPoetries: savedPoetries,
         );
 
   ProfileModel copyWith({
@@ -26,6 +28,7 @@ class ProfileModel extends Profile {
     List<ProfileModel>? followers,
     List<ProfileModel>? following,
     List<PoetryModel>? poetries,
+    List<PoetryModel>? savedPoetries,
   }) {
     return ProfileModel(
       userId: userId ?? this.userId,
@@ -36,6 +39,7 @@ class ProfileModel extends Profile {
       followers: followers ?? this.followers.cast<ProfileModel>(),
       following: following ?? this.following.cast<ProfileModel>(),
       poetries: poetries ?? this.poetries.cast<PoetryModel>(),
+      savedPoetries: savedPoetries ?? this.savedPoetries.cast<PoetryModel>(),
     );
   }
 
@@ -55,6 +59,9 @@ class ProfileModel extends Profile {
       'poetries': poetries
           .map((poetry) => poetry is PoetryModel ? (poetry).toMap() : {})
           .toList(),
+      'saved_poetries': savedPoetries
+          .map((poetry) => poetry is PoetryModel ? (poetry).toMap() : {})
+          .toList(),
     };
   }
 
@@ -72,6 +79,9 @@ class ProfileModel extends Profile {
           .map((follow) => ProfileModel.fromMap(follow))
           .toList(),
       poetries: (map['poetries'] as List)
+          .map((poetry) => PoetryModel.fromMap(poetry))
+          .toList(),
+      savedPoetries: (map['saved_poetries'] as List)
           .map((poetry) => PoetryModel.fromMap(poetry))
           .toList(),
     );

@@ -9,6 +9,7 @@ class Profile {
   final List<Profile> followers;
   final List<Profile> following;
   final List<Poetry> poetries;
+  final List<Poetry> savedPoetries;
 
   Profile({
     required this.userId,
@@ -19,5 +20,6 @@ class Profile {
     required this.followers,
     required this.following,
     required this.poetries,
+    required this.savedPoetries,
   });
 }

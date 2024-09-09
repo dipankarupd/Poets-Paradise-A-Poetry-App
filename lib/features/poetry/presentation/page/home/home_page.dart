@@ -67,7 +67,10 @@ class _HomePageState extends State<HomePage> {
                           onTap: () {
                             PersistentNavBarNavigator.pushNewScreen(
                               context,
-                              screen: AllLatestList(poetries: state.poetries),
+                              screen: AllLatestList(
+                                poetries: state.poetries,
+                                profile: state.profile,
+                              ),
                             );
                           },
                           child: const Text(
@@ -89,12 +92,12 @@ class _HomePageState extends State<HomePage> {
                         itemBuilder: (context, index) {
                           return PopularPoetryCard(
                             poetry: state.poetries[index],
+                            isLiked: false,
+                            isSaved: state.profile.savedPoetries
+                                .any((p) => p.id == state.poetries[index].id),
                           );
                         },
-                        itemCount: state.poetries
-                            .getRange(state.poetries.length - 3,
-                                state.poetries.length)
-                            .length,
+                        itemCount: state.poetries.length,
                       ),
                     ),
                     const SizedBox(height: 30),
@@ -112,6 +115,7 @@ class _HomePageState extends State<HomePage> {
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return PoetryCategoryCard(
+                            profile: state.profile,
                             category: categoryList[index],
                             poetries: state.poetries.where((p) {
                               return p.categories.contains(categoryList[index]);

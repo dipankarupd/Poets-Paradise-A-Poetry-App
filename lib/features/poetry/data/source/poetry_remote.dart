@@ -17,4 +17,6 @@ abstract interface class PoetryRemoteSource {
   Future<List<PoetryModel>> getAllPoetries();
 
   Future<List<ProfileModel>> getAllProfiles();
+
+  Future<void> addToSaved(PoetryModel poetry);
 }

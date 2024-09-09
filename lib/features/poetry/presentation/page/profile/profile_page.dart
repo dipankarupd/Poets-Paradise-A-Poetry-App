@@ -92,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${widget.profile.poetries.length}',
+                            '${state.profile.poetries.length}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const Text(
@@ -118,7 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${widget.profile.followers.length}',
+                            '${state.profile.followers.length}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const Text(
@@ -138,14 +138,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.profile.username,
+                          state.profile.username,
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          widget.profile.bio,
+                          state.profile.bio,
                           style: const TextStyle(fontSize: 16),
                           textAlign: TextAlign.start,
                         ),
@@ -212,7 +212,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   Expanded(
                     child: GridView.builder(
-                        itemCount: widget.profile.poetries.length,
+                        itemCount: state.profile.poetries.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3),
@@ -227,7 +227,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           //   ),
                           // );
                           return PoemDisplayCard(
-                              poem: widget.profile.poetries[index]);
+                            poem: state.profile.poetries[index],
+                            isLiked: false,
+                            isSaved: state.profile.savedPoetries
+                                .any((p) => p.id == state.poetries[index].id),
+                          );
                         }),
                   )
                 ],

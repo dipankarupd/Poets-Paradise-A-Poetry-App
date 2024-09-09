@@ -49,3 +49,5 @@ class PoetryUploadSuccessState extends PoetryState {
 }
 
 class PoetryUploadingState extends PoetryState {}
+
+class PoetrySaveState extends PoetryState {}

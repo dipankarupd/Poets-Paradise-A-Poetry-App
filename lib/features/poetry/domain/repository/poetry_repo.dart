@@ -26,4 +26,6 @@ abstract interface class PoetryRepo {
   Future<Either<Failure, List<Poetry>>> getAllPoetry();
 
   Future<Either<Failure, List<Profile>>> getAllProfiles();
+
+  Future<Either<Failure, Unit>> addToSaved(Poetry poetry);
 }
