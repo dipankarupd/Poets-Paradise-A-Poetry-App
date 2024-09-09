@@ -11,6 +11,7 @@ import 'package:poets_paradise/features/poetry/domain/usecase/add_to_saved.dart'
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_poetry.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_profiles.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/update_profile.dart';
+import 'package:poets_paradise/features/poetry/domain/usecase/upload_comment.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/upload_poetry.dart';
 
 part 'poetry_event.dart';
@@ -24,6 +25,7 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
   final GetAllPoetry _getAllPoetry;
   final GetAllProfiles _getAllProfiles;
   final UpdateSaved _addToSaved;
+  final UploadComment _uploadComment;
   PoetryBloc(
     this._currentUser,
     this._updateProfile,
@@ -32,6 +34,7 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
     this._getAllPoetry,
     this._getAllProfiles,
     this._addToSaved,
+    this._uploadComment,
   ) : super(PoetryInitial()) {
     on<PoetryInitialEvent>(poetryInitialEvent);
 
@@ -46,6 +49,8 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
     on<PoetryUploadPoemEvent>(poetryUploadPoemEvent);
 
     on<PoetrySaveButtonPressEvent>(poetrySaveButtonPressEvent);
+
+    on<AddCommentEvent>(addCommentEvent);
   }
 
   Future<void> poetryInitialEvent(
@@ -172,6 +177,26 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
     res.fold(
       (l) => emit(PoetryFailedState(message: l.message)),
       (r) => emit(PoetrySaveState()),
+    );
+
+    add(PoetryInitialEvent());
+  }
+
+  FutureOr<void> addCommentEvent(
+      AddCommentEvent event, Emitter<PoetryState> emit) async {
+    final res = await _uploadComment(UploadCommentUseCaseParams(
+      author: event.author,
+      poetry: event.poetry,
+      createdAt: event.createdAt,
+      content: event.content,
+      likes: event.likes,
+    ));
+
+    res.fold(
+      (l) => emit(PoetryFailedState(message: l.message)),
+      (r) {
+        emit(AddCommentSuccessState());
+      },
     );
 
     add(PoetryInitialEvent());

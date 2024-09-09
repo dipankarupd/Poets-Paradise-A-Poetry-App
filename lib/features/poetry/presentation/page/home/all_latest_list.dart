@@ -42,6 +42,7 @@ class AllLatestList extends StatelessWidget {
                     child: SizedBox(
                       height: 140,
                       child: PopularPoetryCard(
+                        currentUser: profile,
                         poetry: poetries[index],
                         isLiked: false,
                         isSaved: profile.savedPoetries

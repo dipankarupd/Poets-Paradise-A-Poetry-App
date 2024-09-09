@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:poets_paradise/cores/entities/profile.dart';
 import 'package:poets_paradise/features/poetry/domain/entity/poetry.dart';
 import 'package:poets_paradise/features/poetry/presentation/page/read_poetry_page.dart';
 
 class PoemDisplayCard extends StatelessWidget {
+  final Profile currentUser;
   final Poetry poem;
   final bool isLiked;
   final bool isSaved;
@@ -13,6 +15,7 @@ class PoemDisplayCard extends StatelessWidget {
     required this.poem,
     required this.isLiked,
     required this.isSaved,
+    required this.currentUser,
   });
 
   @override
@@ -22,6 +25,7 @@ class PoemDisplayCard extends StatelessWidget {
         PersistentNavBarNavigator.pushNewScreen(
           context,
           screen: ReadPoetryPage(
+            currentUser: currentUser,
             poetry: poem,
             isLiked: isLiked,
             isSaved: isSaved,

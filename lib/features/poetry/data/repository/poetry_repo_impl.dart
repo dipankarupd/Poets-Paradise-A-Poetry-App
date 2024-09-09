@@ -5,8 +5,10 @@ import 'package:poets_paradise/cores/entities/profile.dart';
 import 'package:poets_paradise/cores/exceptions/server_exception.dart';
 import 'package:poets_paradise/cores/models/profile_model.dart';
 import 'package:poets_paradise/cores/utils/failure.dart';
+import 'package:poets_paradise/features/poetry/data/model/comment_model.dart';
 import 'package:poets_paradise/features/poetry/data/model/poetry_model.dart';
 import 'package:poets_paradise/features/poetry/data/source/poetry_remote.dart';
+import 'package:poets_paradise/features/poetry/domain/entity/comments.dart';
 import 'package:poets_paradise/features/poetry/domain/entity/poetry.dart';
 import 'package:poets_paradise/features/poetry/domain/repository/poetry_repo.dart';
 
@@ -97,6 +99,31 @@ class PoetryRepoImpl implements PoetryRepo {
       );
       await source.addToSaved(poem);
       return right(unit);
+    } on ServerException catch (e) {
+      return left(Failure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Comments>> uploadComment(
+    Profile author,
+    Poetry poetry,
+    DateTime createdAt,
+    String content,
+    List<String> likes,
+  ) async {
+    try {
+      CommentsModel comments = CommentsModel(
+        id: '',
+        content: content,
+        author: author as ProfileModel,
+        poem: poetry as PoetryModel,
+        likes: likes,
+        createdAt: createdAt,
+      );
+
+      final res = await source.uploadComment(comments);
+      return right(res);
     } on ServerException catch (e) {
       return left(Failure(message: e.message));
     }

@@ -29,6 +29,7 @@ class SavePage extends StatelessWidget {
                             child: SizedBox(
                               height: 140,
                               child: PopularPoetryCard(
+                                currentUser: state.profile,
                                 poetry: poetries[index],
                                 isLiked: false,
                                 isSaved: state.profile.savedPoetries

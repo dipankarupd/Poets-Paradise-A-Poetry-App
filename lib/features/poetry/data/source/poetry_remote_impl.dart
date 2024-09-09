@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:poets_paradise/cores/exceptions/server_exception.dart';
 import 'package:poets_paradise/cores/models/profile_model.dart';
+import 'package:poets_paradise/features/poetry/data/model/comment_model.dart';
 import 'package:poets_paradise/features/poetry/data/model/poetry_model.dart';
 import 'package:poets_paradise/features/poetry/data/source/poetry_remote.dart';
 
@@ -176,6 +177,19 @@ class PoetryRemoteImpl implements PoetryRemoteSource {
           .collection('users')
           .doc(user.uid)
           .update(updatedProfile.toMap());
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<CommentsModel> uploadComment(CommentsModel comment) async {
+    try {
+      final res =
+          await firebaseFirestore.collection('comments').add(comment.toMap());
+
+      final updatedComment = comment.copyWith(id: res.id);
+      return updatedComment;
     } catch (e) {
       throw ServerException(message: e.toString());
     }

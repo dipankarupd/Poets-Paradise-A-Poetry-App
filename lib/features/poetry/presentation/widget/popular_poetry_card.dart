@@ -1,12 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:poets_paradise/cores/entities/profile.dart';
 
 import 'package:poets_paradise/cores/palette/app_palette.dart';
 import 'package:poets_paradise/features/poetry/domain/entity/poetry.dart';
 import 'package:poets_paradise/features/poetry/presentation/page/read_poetry_page.dart';
 
 class PopularPoetryCard extends StatelessWidget {
+  final Profile currentUser;
   final Poetry poetry;
   final bool isLiked;
   final bool isSaved;
@@ -15,6 +17,7 @@ class PopularPoetryCard extends StatelessWidget {
     required this.poetry,
     required this.isLiked,
     required this.isSaved,
+    required this.currentUser,
   });
 
   @override
@@ -72,6 +75,7 @@ class PopularPoetryCard extends StatelessWidget {
                       PersistentNavBarNavigator.pushNewScreen(
                         context,
                         screen: ReadPoetryPage(
+                          currentUser: currentUser,
                           poetry: poetry,
                           isLiked: isLiked,
                           isSaved: isSaved,

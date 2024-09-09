@@ -91,6 +91,7 @@ class _HomePageState extends State<HomePage> {
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return PopularPoetryCard(
+                            currentUser: state.profile,
                             poetry: state.poetries[index],
                             isLiked: false,
                             isSaved: state.profile.savedPoetries

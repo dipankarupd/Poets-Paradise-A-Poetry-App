@@ -227,6 +227,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           //   ),
                           // );
                           return PoemDisplayCard(
+                            currentUser: state.profile,
                             poem: state.profile.poetries[index],
                             isLiked: false,
                             isSaved: state.profile.savedPoetries

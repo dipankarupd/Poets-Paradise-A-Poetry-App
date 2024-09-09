@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:poets_paradise/cores/entities/profile.dart';
 import 'package:poets_paradise/cores/palette/app_palette.dart';
 import 'package:poets_paradise/cores/utils/comment_bottom_sheet.dart';
 import 'package:poets_paradise/cores/utils/format_time.dart';
@@ -8,12 +9,14 @@ import 'package:poets_paradise/features/poetry/domain/entity/poetry.dart';
 import 'package:poets_paradise/features/poetry/presentation/widget/poetry_row_icons.dart';
 
 class ReadPoetryPage extends StatelessWidget {
+  final Profile currentUser;
   final Poetry poetry;
   final bool isLiked;
   final bool isSaved;
   const ReadPoetryPage({
     super.key,
     required this.poetry,
+    required this.currentUser,
     required this.isLiked,
     required this.isSaved,
   });
@@ -112,8 +115,12 @@ class ReadPoetryPage extends StatelessWidget {
                     Row(
                       children: [
                         IconButton(
-                          onPressed: () =>
-                              commentBottomSheet(context, commentController),
+                          onPressed: () => commentBottomSheet(
+                              context: context,
+                              commentController: commentController,
+                              key: key,
+                              author: currentUser,
+                              poetry: poetry),
                           icon: const Icon(Icons.comment_outlined),
                         ),
                         const Text('Comment')
