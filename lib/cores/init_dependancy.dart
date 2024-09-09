@@ -17,7 +17,6 @@ import 'package:poets_paradise/features/poetry/domain/usecase/add_to_saved.dart'
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_poetry.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_profiles.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/update_profile.dart';
-import 'package:poets_paradise/features/poetry/domain/usecase/upload_comment.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/upload_poetry.dart';
 import 'package:poets_paradise/features/poetry/presentation/bloc/poetry_bloc.dart';
 import 'package:poets_paradise/firebase_options.dart';
@@ -74,12 +73,8 @@ void _initPoetry() {
     ..registerFactory<UpdateSaved>(
       () => UpdateSaved(repo: serviceLocator()),
     )
-    ..registerFactory(
-      () => UploadComment(repo: serviceLocator()),
-    )
     ..registerLazySingleton<PoetryBloc>(
       () => PoetryBloc(
-        serviceLocator(),
         serviceLocator(),
         serviceLocator(),
         serviceLocator(),

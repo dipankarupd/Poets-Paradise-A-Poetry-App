@@ -50,25 +50,3 @@ class PoetrySaveButtonPressEvent extends PoetryEvent {
 
   PoetrySaveButtonPressEvent({required this.poetry});
 }
-
-class AddCommentEvent extends PoetryEvent {
-  final Profile author;
-  final Poetry poetry;
-  final DateTime createdAt;
-  final String content;
-  final List<String> likes;
-
-  AddCommentEvent({
-    required this.author,
-    required this.poetry,
-    required this.createdAt,
-    required this.content,
-    required this.likes,
-  });
-}
-
-class FetchCommentEvent extends PoetryEvent {
-  final Poetry poetry;
-
-  FetchCommentEvent({required this.poetry});
-}

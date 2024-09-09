@@ -43,6 +43,7 @@ void commentBottomSheet({
                       IconButton(
                         onPressed: () {
                           Navigator.pop(context);
+                          context.read<PoetryBloc>().add(PoetryInitialEvent());
                         },
                         icon: const Icon(Icons.arrow_back_ios),
                       ),
@@ -53,19 +54,55 @@ void commentBottomSheet({
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      IconButton(onPressed: () {}, icon: const Icon(Icons.info))
+                      IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.info_outline))
                     ],
                   ),
                   const SizedBox(height: 10),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: 25,
-                      itemBuilder: (context, index) {
-                        return Container(
-                            margin: const EdgeInsets.all(4),
-                            child: const Text('data'));
-                      },
-                    ),
+                  BlocBuilder<PoetryBloc, PoetryState>(
+                    builder: (context, state) {
+                      print(state);
+                      if (state is FetchCommentsSuccessState) {
+                        print(state.comments);
+                        return Expanded(
+                          child: ListView.builder(
+                            itemCount: state.comments.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                  margin: const EdgeInsets.all(4),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          // CircleAvatar(
+                                          //   radius: 20,
+                                          //   backgroundImage: NetworkImage(state
+                                          //       .comments[index].author.dp),
+                                          // ),
+                                          // Text(
+                                          //   state.comments[index].author
+                                          //       .username,
+                                          //   style: TextStyle(
+                                          //     color: Colors.black,
+                                          //   ),
+                                          // ),
+                                          // Text(state.comments[index].content)
+                                        ],
+                                      ),
+                                    ],
+                                  ));
+                            },
+                          ),
+                        );
+                      } else {
+                        return const Center(
+                          child: Text('Add a Comment'),
+                        );
+                      }
+                    },
                   ),
                   Container(
                     width: double.infinity,
@@ -86,17 +123,17 @@ void commentBottomSheet({
                           labelText: 'Enter the comment',
                           suffix: TextButton(
                             onPressed: () {
-                              if (key.currentState!.validate()) {
-                                context.read<PoetryBloc>().add(
-                                      AddCommentEvent(
-                                        author: author,
-                                        poetry: poetry,
-                                        createdAt: DateTime.now(),
-                                        content: commentController.text.trim(),
-                                        likes: [],
-                                      ),
-                                    );
-                              }
+                              // if (key.currentState!.validate()) {
+                              //   context.read<PoetryBloc>().add(
+                              //       // AddCommentEvent(
+                              //       //   author: author,
+                              //       //   poetry: poetry.id,
+                              //       //   createdAt: DateTime.now(),
+                              //       //   content: commentController.text.trim(),
+                              //       //   likes: [],
+                              //       // ),
+                              //       );
+                              // }
                             },
                             child: const Text('Next'),
                           ),

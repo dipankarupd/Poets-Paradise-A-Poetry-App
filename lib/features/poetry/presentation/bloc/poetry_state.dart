@@ -55,5 +55,7 @@ class PoetrySaveState extends PoetryState {}
 class AddCommentSuccessState extends PoetryState {}
 
 class FetchCommentsSuccessState extends PoetryState {
-  late final List<Comments> comments;
+  final List<Comments> comments;
+
+  FetchCommentsSuccessState({required this.comments});
 }

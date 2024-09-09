@@ -30,13 +30,13 @@ abstract interface class PoetryRepo {
 
   Future<Either<Failure, Unit>> addToSaved(Poetry poetry);
 
-  Future<Either<Failure, Comments>> uploadComment(
-    final Profile author,
-    final Poetry poetry,
-    final DateTime createdAt,
-    final String content,
-    final List<String> likes,
-  );
+  // Future<Either<Failure, Comments>> uploadComment(
+  //   final String author,
+  //   final String poetry,
+  //   final DateTime createdAt,
+  //   final String content,
+  //   final List<String> likes,
+  // );
 
-  Future<Either<Failure, List<Comments>>> getComments(Poetry poetry);
+  // Future<Either<Failure, List<Comments>>> getComments(Poetry poetry);
 }

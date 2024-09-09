@@ -1,30 +1,28 @@
-import 'package:poets_paradise/cores/models/profile_model.dart';
-import 'package:poets_paradise/features/poetry/data/model/poetry_model.dart';
 import 'package:poets_paradise/features/poetry/domain/entity/comments.dart';
 
 class CommentsModel extends Comments {
   CommentsModel({
     required super.id,
     required super.content,
-    required ProfileModel author,
-    required PoetryModel poem,
+    required super.author,
+    required super.poem,
     required super.likes,
     required super.createdAt,
-  }) : super(author: author, poem: poem);
+  });
 
   CommentsModel copyWith({
     String? id,
     String? content,
-    ProfileModel? author,
-    PoetryModel? poem,
+    String? author,
+    String? poem,
     List<String>? likes,
     DateTime? createdAt,
   }) {
     return CommentsModel(
       id: id ?? this.id,
       content: content ?? this.content,
-      author: author ?? this.author as ProfileModel,
-      poem: poem ?? this.poem as PoetryModel,
+      author: author ?? this.author,
+      poem: poem ?? this.poem,
       likes: likes ?? this.likes,
       createdAt: createdAt ?? this.createdAt,
     );
@@ -34,8 +32,8 @@ class CommentsModel extends Comments {
     return <String, dynamic>{
       'id': id,
       'content': content,
-      'author': (author as ProfileModel).toMap(),
-      'poem': (poem as PoetryModel).toMap(),
+      'author': author,
+      'poem': poem,
       'likes': likes,
       'created_at': createdAt.millisecondsSinceEpoch,
     };
@@ -45,8 +43,8 @@ class CommentsModel extends Comments {
     return CommentsModel(
       id: map['id'] as String,
       content: map['content'] as String,
-      author: ProfileModel.fromMap(map['author'] as Map<String, dynamic>),
-      poem: PoetryModel.fromMap(map['poem'] as Map<String, dynamic>),
+      author: map['author'] as String,
+      poem: map['poem'] as String,
       likes: List<String>.from((map['likes'] as List<String>)),
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at'] as int),
     );

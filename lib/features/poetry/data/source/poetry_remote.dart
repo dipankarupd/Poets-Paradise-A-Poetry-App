@@ -21,7 +21,7 @@ abstract interface class PoetryRemoteSource {
 
   Future<void> addToSaved(PoetryModel poetry);
 
-  Future<CommentsModel> uploadComment(CommentsModel comment);
+  // Future<CommentsModel> uploadComment(CommentsModel comment);
 
-  Future<List<CommentsModel>> getAllComments(PoetryModel poetry);
+  // Future<List<CommentsModel>> getAllComments(PoetryModel poetry);
 }
