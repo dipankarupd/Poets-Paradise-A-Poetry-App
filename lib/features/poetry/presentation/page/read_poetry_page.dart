@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:poets_paradise/cores/palette/app_palette.dart';
+import 'package:poets_paradise/cores/utils/comment_bottom_sheet.dart';
 import 'package:poets_paradise/cores/utils/format_time.dart';
 import 'package:poets_paradise/features/poetry/domain/entity/poetry.dart';
 import 'package:poets_paradise/features/poetry/presentation/widget/poetry_row_icons.dart';
@@ -19,6 +20,8 @@ class ReadPoetryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController commentController = TextEditingController();
+    final key = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -33,114 +36,120 @@ class ReadPoetryPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                poetry.title,
-                style: const TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                'By ${poetry.author.username}',
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              RichText(
-                text: TextSpan(
-                    text: 'Created At: ',
-                    style: const TextStyle(fontSize: 16, color: Colors.black),
-                    children: [
-                      TextSpan(
-                          text: formatTime(poetry.created_at),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          )),
-                    ]),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: double.infinity,
-                height: 240,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Image(
-                  image: NetworkImage(poetry.image),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  RowIcons(
-                    unPressedIcon: isLiked
-                        ? const Icon(
-                            CupertinoIcons.heart_fill,
-                            color: AppPallete.purpleColor,
-                          )
-                        : Icon(CupertinoIcons.heart),
-                    label: 'Like',
-                    pressedIcon: isLiked
-                        ? const Icon(CupertinoIcons.heart)
-                        : const Icon(
-                            CupertinoIcons.heart_fill,
-                            color: AppPallete.purpleColor,
-                          ),
-                    poetry: poetry,
+          child: Form(
+            key: key,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  poetry.title,
+                  style: const TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
                   ),
-                  RowIcons(
-                    unPressedIcon: const Icon(Icons.comment_outlined),
-                    label: 'Comment',
-                    pressedIcon: const Icon(
-                      Icons.comment,
-                      color: AppPallete.purpleColor,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'By ${poetry.author.username}',
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                RichText(
+                  text: TextSpan(
+                      text: 'Created At: ',
+                      style: const TextStyle(fontSize: 16, color: Colors.black),
+                      children: [
+                        TextSpan(
+                            text: formatTime(poetry.created_at),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            )),
+                      ]),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 240,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Image(
+                    image: NetworkImage(poetry.image),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RowIcons(
+                      unPressedIcon: isLiked
+                          ? const Icon(
+                              CupertinoIcons.heart_fill,
+                              color: AppPallete.purpleColor,
+                            )
+                          : const Icon(CupertinoIcons.heart),
+                      label: 'Like',
+                      pressedIcon: isLiked
+                          ? const Icon(CupertinoIcons.heart)
+                          : const Icon(
+                              CupertinoIcons.heart_fill,
+                              color: AppPallete.purpleColor,
+                            ),
+                      poetry: poetry,
                     ),
-                    poetry: poetry,
-                  ),
-                  RowIcons(
-                    unPressedIcon: isSaved
-                        ? const Icon(
-                            Icons.bookmark,
-                            color: AppPallete.purpleColor,
-                          )
-                        : const Icon(Icons.bookmark_outline),
-                    label: 'Save',
-                    pressedIcon: const Icon(
-                      Icons.bookmark,
-                      color: AppPallete.purpleColor,
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () =>
+                              commentBottomSheet(context, commentController),
+                          icon: const Icon(Icons.comment_outlined),
+                        ),
+                        const Text('Comment')
+                      ],
                     ),
-                    poetry: poetry,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                poetry.content,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                  height: 1.8,
+                    RowIcons(
+                      unPressedIcon: isSaved
+                          ? const Icon(
+                              Icons.bookmark,
+                              color: AppPallete.purpleColor,
+                            )
+                          : const Icon(Icons.bookmark_outline),
+                      label: 'Save',
+                      pressedIcon: isSaved
+                          ? const Icon(Icons.bookmark_outline)
+                          : const Icon(
+                              Icons.bookmark,
+                              color: AppPallete.purpleColor,
+                            ),
+                      poetry: poetry,
+                    ),
+                  ],
                 ),
-              )
-            ],
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  poetry.content,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    height: 1.8,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

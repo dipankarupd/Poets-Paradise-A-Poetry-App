@@ -20,7 +20,7 @@ class SavePage extends StatelessWidget {
             body: poetries.isEmpty
                 ? const Center(child: Text('No saved Poetries'))
                 : Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16),
                     child: ListView.builder(
                         itemCount: poetries.length,
                         itemBuilder: (context, index) {
