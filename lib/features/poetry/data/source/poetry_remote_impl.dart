@@ -194,4 +194,23 @@ class PoetryRemoteImpl implements PoetryRemoteSource {
       throw ServerException(message: e.toString());
     }
   }
+
+  @override
+  Future<List<CommentsModel>> getAllComments(PoetryModel poetry) async {
+    try {
+      final res = await firebaseFirestore
+          .collection('comments')
+          .where('poem', isEqualTo: poetry.id)
+          .get();
+
+      final comments = res.docs.map((c) {
+        final data = c.data();
+        return CommentsModel.fromMap(data);
+      }).toList();
+
+      return comments;
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
 }

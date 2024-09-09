@@ -128,4 +128,25 @@ class PoetryRepoImpl implements PoetryRepo {
       return left(Failure(message: e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, List<Comments>>> getComments(Poetry poetry) async {
+    try {
+      PoetryModel poetryModel = PoetryModel(
+        id: poetry.id,
+        title: poetry.title,
+        content: poetry.content,
+        image: poetry.image,
+        categories: poetry.categories,
+        author: poetry.author as ProfileModel,
+        likes: poetry.likes,
+        comments: poetry.comments,
+        created_at: poetry.created_at,
+      );
+      final res = await source.getAllComments(poetryModel);
+      return right(res);
+    } on ServerException catch (e) {
+      return left(Failure(message: e.message));
+    }
+  }
 }

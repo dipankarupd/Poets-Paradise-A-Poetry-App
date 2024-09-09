@@ -37,4 +37,6 @@ abstract interface class PoetryRepo {
     final String content,
     final List<String> likes,
   );
+
+  Future<Either<Failure, List<Comments>>> getComments(Poetry poetry);
 }

@@ -66,3 +66,9 @@ class AddCommentEvent extends PoetryEvent {
     required this.likes,
   });
 }
+
+class FetchCommentEvent extends PoetryEvent {
+  final Poetry poetry;
+
+  FetchCommentEvent({required this.poetry});
+}

@@ -53,3 +53,7 @@ class PoetryUploadingState extends PoetryState {}
 class PoetrySaveState extends PoetryState {}
 
 class AddCommentSuccessState extends PoetryState {}
+
+class FetchCommentsSuccessState extends PoetryState {
+  late final List<Comments> comments;
+}
