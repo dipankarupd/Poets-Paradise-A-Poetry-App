@@ -38,4 +38,10 @@ abstract interface class PoetryRepo {
   );
 
   Future<Either<Failure, List<CommentResponse>>> getComments(String poetryId);
+
+  Future<Either<Failure, Unit>> toggleLike(
+    String author,
+    String? poetry,
+    String? comment,
+  );
 }

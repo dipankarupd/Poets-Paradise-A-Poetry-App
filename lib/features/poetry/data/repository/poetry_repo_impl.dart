@@ -6,6 +6,7 @@ import 'package:poets_paradise/cores/exceptions/server_exception.dart';
 import 'package:poets_paradise/cores/models/profile_model.dart';
 import 'package:poets_paradise/cores/utils/failure.dart';
 import 'package:poets_paradise/features/poetry/data/model/comment_model.dart';
+import 'package:poets_paradise/features/poetry/data/model/like_model.dart';
 import 'package:poets_paradise/features/poetry/data/model/poetry_model.dart';
 import 'package:poets_paradise/features/poetry/data/source/poetry_remote.dart';
 import 'package:poets_paradise/features/poetry/domain/entity/comments.dart';
@@ -134,6 +135,25 @@ class PoetryRepoImpl implements PoetryRepo {
     try {
       final res = await source.getComments(poetryId);
       return right(res);
+    } on ServerException catch (e) {
+      return left(Failure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> toggleLike(
+      String author, String? poetry, String? comment) async {
+    try {
+      LikesModel like = LikesModel(
+        id: '',
+        user: author,
+        createdAt: DateTime.now(),
+        poetry: poetry,
+        comment: comment,
+      );
+
+      await source.updateLike(like);
+      return right(unit);
     } on ServerException catch (e) {
       return left(Failure(message: e.message));
     }

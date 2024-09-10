@@ -17,6 +17,7 @@ import 'package:poets_paradise/features/poetry/domain/usecase/add_to_saved.dart'
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_poetry.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_profiles.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/get_comments.dart';
+import 'package:poets_paradise/features/poetry/domain/usecase/update_like.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/update_profile.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/upload_comment.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/upload_poetry.dart';
@@ -81,8 +82,12 @@ void _initPoetry() {
     ..registerFactory<GetComments>(
       () => GetComments(repo: serviceLocator()),
     )
+    ..registerFactory(
+      () => UpdateLike(repo: serviceLocator()),
+    )
     ..registerLazySingleton<PoetryBloc>(
       () => PoetryBloc(
+        serviceLocator(),
         serviceLocator(),
         serviceLocator(),
         serviceLocator(),

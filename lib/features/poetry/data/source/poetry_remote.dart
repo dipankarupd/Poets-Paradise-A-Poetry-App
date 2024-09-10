@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:poets_paradise/cores/models/profile_model.dart';
 import 'package:poets_paradise/features/poetry/data/model/comment_model.dart';
+import 'package:poets_paradise/features/poetry/data/model/like_model.dart';
 import 'package:poets_paradise/features/poetry/data/model/poetry_model.dart';
 
 abstract interface class PoetryRemoteSource {
@@ -24,4 +25,6 @@ abstract interface class PoetryRemoteSource {
   Future<CommentsModel> uploadComment(CommentsModel comment);
 
   Future<List<CommentResponseModel>> getComments(String poetryId);
+
+  Future<void> updateLike(LikesModel likeModel);
 }

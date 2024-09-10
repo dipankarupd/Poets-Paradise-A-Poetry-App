@@ -12,6 +12,7 @@ import 'package:poets_paradise/features/poetry/domain/usecase/add_to_saved.dart'
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_poetry.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_profiles.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/get_comments.dart';
+import 'package:poets_paradise/features/poetry/domain/usecase/update_like.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/update_profile.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/upload_comment.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/upload_poetry.dart';
@@ -29,6 +30,7 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
   final UpdateSaved _addToSaved;
   final UploadComment _uploadComment;
   final GetComments _getComments;
+  final UpdateLike _updateLike;
 
   PoetryBloc(
     this._currentUser,
@@ -40,6 +42,7 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
     this._addToSaved,
     this._uploadComment,
     this._getComments,
+    this._updateLike,
   ) : super(PoetryInitial()) {
     on<PoetryInitialEvent>(poetryInitialEvent);
 
@@ -57,6 +60,8 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
 
     on<PoetryCommentUploadEvent>(poetryCommentUploadEvent);
     on<PoetryGetCommentsEvent>(poetryGetCommentsEvent);
+
+    on<PoetryToggleLikeEvent>(poetryToggleLikeEvent);
   }
 
   Future<void> poetryInitialEvent(
@@ -217,5 +222,25 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
       (l) => emit(PoetryFailedState(message: l.message)),
       (r) => emit(FetchCommentsSuccessState(comments: r)),
     );
+  }
+
+  FutureOr<void> poetryToggleLikeEvent(
+    PoetryToggleLikeEvent event,
+    Emitter<PoetryState> emit,
+  ) async {
+    final res = await _updateLike(
+      UpdateLikeParams(
+        author: event.author,
+        poetry: event.poetry,
+        comment: event.comment,
+      ),
+    );
+
+    res.fold(
+      (l) => emit(PoetryFailedState(message: l.message)),
+      (r) => emit(PoetryToggleLikeState()),
+    );
+
+    add(PoetryInitialEvent());
   }
 }

@@ -59,3 +59,5 @@ class FetchCommentsSuccessState extends PoetryState {
 
   FetchCommentsSuccessState({required this.comments});
 }
+
+class PoetryToggleLikeState extends PoetryState {}

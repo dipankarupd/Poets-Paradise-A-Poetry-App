@@ -8,12 +8,10 @@ import 'package:poets_paradise/features/poetry/presentation/page/read_poetry_pag
 class PoemDisplayCard extends StatelessWidget {
   final Profile currentUser;
   final Poetry poem;
-  final bool isLiked;
   final bool isSaved;
   const PoemDisplayCard({
     super.key,
     required this.poem,
-    required this.isLiked,
     required this.isSaved,
     required this.currentUser,
   });
@@ -27,7 +25,6 @@ class PoemDisplayCard extends StatelessWidget {
           screen: ReadPoetryPage(
             currentUser: currentUser,
             poetry: poem,
-            isLiked: isLiked,
             isSaved: isSaved,
           ),
         );

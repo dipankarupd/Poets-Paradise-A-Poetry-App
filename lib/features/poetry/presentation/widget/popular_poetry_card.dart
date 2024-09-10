@@ -77,7 +77,6 @@ class PopularPoetryCard extends StatelessWidget {
                         screen: ReadPoetryPage(
                           currentUser: currentUser,
                           poetry: poetry,
-                          isLiked: isLiked,
                           isSaved: isSaved,
                         ),
                       );

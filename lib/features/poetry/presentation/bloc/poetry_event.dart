@@ -69,3 +69,12 @@ class PoetryGetCommentsEvent extends PoetryEvent {
 
   PoetryGetCommentsEvent({required this.poetryId});
 }
+
+class PoetryToggleLikeEvent extends PoetryEvent {
+  final String author;
+  final String? poetry;
+  final String? comment;
+
+  PoetryToggleLikeEvent(
+      {required this.author, required this.poetry, required this.comment});
+}

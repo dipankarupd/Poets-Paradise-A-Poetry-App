@@ -219,7 +219,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           return PoemDisplayCard(
                             currentUser: widget.profile,
                             poem: widget.profile.poetries[index],
-                            isLiked: false,
                             isSaved: widget.profile.savedPoetries
                                 .any((p) => p.id == state.poetries[index].id),
                           );

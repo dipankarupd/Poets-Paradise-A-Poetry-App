@@ -13,13 +13,12 @@ import 'package:poets_paradise/features/poetry/presentation/widget/poetry_row_ic
 class ReadPoetryPage extends StatelessWidget {
   final Profile currentUser;
   final Poetry poetry;
-  final bool isLiked;
+
   final bool isSaved;
   const ReadPoetryPage({
     super.key,
     required this.poetry,
     required this.currentUser,
-    required this.isLiked,
     required this.isSaved,
   });
 
@@ -27,6 +26,9 @@ class ReadPoetryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController commentController = TextEditingController();
     final key = GlobalKey<FormState>();
+
+    final bool isLiked = poetry.likes.contains(currentUser.userId);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -99,6 +101,7 @@ class ReadPoetryPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     RowIcons(
+                      currentUser: currentUser,
                       unPressedIcon: isLiked
                           ? const Icon(
                               CupertinoIcons.heart_fill,
@@ -134,6 +137,7 @@ class ReadPoetryPage extends StatelessWidget {
                       ],
                     ),
                     RowIcons(
+                      currentUser: currentUser,
                       unPressedIcon: isSaved
                           ? const Icon(
                               Icons.bookmark,

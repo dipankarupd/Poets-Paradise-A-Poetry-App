@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:poets_paradise/cores/exceptions/server_exception.dart';
 import 'package:poets_paradise/cores/models/profile_model.dart';
 import 'package:poets_paradise/features/poetry/data/model/comment_model.dart';
+import 'package:poets_paradise/features/poetry/data/model/like_model.dart';
 import 'package:poets_paradise/features/poetry/data/model/poetry_model.dart';
 import 'package:poets_paradise/features/poetry/data/source/poetry_remote.dart';
 
@@ -280,5 +281,108 @@ class PoetryRemoteImpl implements PoetryRemoteSource {
     } catch (e) {
       throw ServerException(message: e.toString());
     }
+  }
+
+  @override
+  Future<void> updateLike(LikesModel likeModel) async {
+    try {
+      final querySnapshot = await firebaseFirestore
+          .collection('likes')
+          .where('user', isEqualTo: likeModel.user)
+          .where(
+            likeModel.poetry != null ? 'poetry' : 'comment',
+            isEqualTo: likeModel.poetry ?? likeModel.comment,
+          )
+          .get();
+
+      // if the document is empty:
+      if (querySnapshot.docs.isEmpty) {
+        // no existing like data:
+        // add
+        final res =
+            await firebaseFirestore.collection('likes').add(likeModel.toMap());
+        final updatedLike = likeModel.copyWith(id: res.id);
+
+        await firebaseFirestore
+            .collection('likes')
+            .doc(res.id)
+            .update(updatedLike.toMap());
+
+        // update the poetry like:
+        if (updatedLike.poetry != null) {
+          await updatePoetryLikes(updatedLike);
+        } else if (updatedLike.comment != null) {
+          await updateCommentLikes(updatedLike);
+        }
+      } else {
+        // like document already exist
+        final existingDoc = querySnapshot.docs.first;
+        await firebaseFirestore
+            .collection('likes')
+            .doc(existingDoc.id)
+            .delete();
+
+        if (likeModel.poetry != null) {
+          await updatePoetryLikes(likeModel, isUnlike: true);
+        } else if (likeModel.comment != null) {
+          await updateCommentLikes(likeModel, isUnlike: true);
+        }
+      }
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  Future<void> updatePoetryLikes(LikesModel likeModel,
+      {bool isUnlike = false}) async {
+    final poetryDocument = await firebaseFirestore
+        .collection('poetries')
+        .doc(likeModel.poetry)
+        .get();
+
+    if (!poetryDocument.exists) {
+      throw ServerException(message: 'No poetry found');
+    }
+
+    final poetryData = PoetryModel.fromMap(poetryDocument.data()!);
+    List<String> likes = poetryData.likes;
+
+    if (isUnlike) {
+      likes.remove(likeModel.user);
+    } else if (!likes.contains(likeModel.user)) {
+      likes.add(likeModel.user);
+    }
+
+    await firebaseFirestore
+        .collection('poetries')
+        .doc(likeModel.poetry)
+        .update({'likes': likes});
+  }
+
+// Helper method to update likes for comments
+  Future<void> updateCommentLikes(LikesModel likeModel,
+      {bool isUnlike = false}) async {
+    final commentDocument = await firebaseFirestore
+        .collection('comments')
+        .doc(likeModel.comment)
+        .get();
+
+    if (!commentDocument.exists) {
+      throw ServerException(message: 'No comment found');
+    }
+
+    final commentData = CommentsModel.fromMap(commentDocument.data()!);
+    List<String> likes = commentData.likes;
+
+    if (isUnlike) {
+      likes.remove(likeModel.user);
+    } else if (!likes.contains(likeModel.user)) {
+      likes.add(likeModel.user);
+    }
+
+    await firebaseFirestore
+        .collection('comments')
+        .doc(likeModel.comment)
+        .update({'likes': likes});
   }
 }
