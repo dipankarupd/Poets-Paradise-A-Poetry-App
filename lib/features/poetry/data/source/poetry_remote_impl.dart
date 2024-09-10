@@ -223,4 +223,62 @@ class PoetryRemoteImpl implements PoetryRemoteSource {
       throw ServerException(message: e.toString());
     }
   }
+
+  @override
+  Future<List<CommentResponseModel>> getComments(String poetryId) async {
+    try {
+      // fetch the data of required poetry
+      final poetryData =
+          await firebaseFirestore.collection('poetries').doc(poetryId).get();
+      if (!poetryData.exists) {
+        throw ServerException(message: 'No poetry found');
+      }
+
+      // get all the comments from the data
+      List<String> commentIds = List<String>.from(
+        poetryData.data()?['comments'] ?? [],
+      );
+
+      List<CommentResponseModel> commentResponses = [];
+
+      // iterate through each comment
+      for (String commentId in commentIds) {
+        // get the comment doc:
+        final commentDoc =
+            await firebaseFirestore.collection('comments').doc(commentId).get();
+
+        // check for doc existance
+        if (commentDoc.exists) {
+          final comment = CommentsModel.fromMap(commentDoc.data()!);
+
+          final authorId = comment.author;
+
+          final authorDoc =
+              await firebaseFirestore.collection('users').doc(authorId).get();
+
+          if (authorDoc.exists) {
+            final author = ProfileModel.fromMap(authorDoc.data()!);
+
+            // create a response:
+            CommentResponseModel commentResponse = CommentResponseModel(
+              id: commentId,
+              content: comment.content,
+              poetry: comment.poetry,
+              createdAt: comment.createdAt,
+              likes: comment.likes,
+              authorId: author.userId,
+              authorName: author.username,
+              authorDp: author.dp,
+            );
+
+            commentResponses.add(commentResponse);
+          }
+        }
+      }
+
+      return commentResponses;
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
 }

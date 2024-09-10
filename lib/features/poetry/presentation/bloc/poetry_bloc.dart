@@ -11,6 +11,7 @@ import 'package:poets_paradise/features/poetry/domain/entity/poetry.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/add_to_saved.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_poetry.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_profiles.dart';
+import 'package:poets_paradise/features/poetry/domain/usecase/get_comments.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/update_profile.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/upload_comment.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/upload_poetry.dart';
@@ -27,6 +28,7 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
   final GetAllProfiles _getAllProfiles;
   final UpdateSaved _addToSaved;
   final UploadComment _uploadComment;
+  final GetComments _getComments;
 
   PoetryBloc(
     this._currentUser,
@@ -37,6 +39,7 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
     this._getAllProfiles,
     this._addToSaved,
     this._uploadComment,
+    this._getComments,
   ) : super(PoetryInitial()) {
     on<PoetryInitialEvent>(poetryInitialEvent);
 
@@ -53,6 +56,7 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
     on<PoetrySaveButtonPressEvent>(poetrySaveButtonPressEvent);
 
     on<PoetryCommentUploadEvent>(poetryCommentUploadEvent);
+    on<PoetryGetCommentsEvent>(poetryGetCommentsEvent);
   }
 
   Future<void> poetryInitialEvent(
@@ -199,7 +203,19 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
 
     res.fold(
       (l) => emit(PoetryFailedState(message: l.message)),
-      (r) => AddCommentSuccessState(),
+      (r) => emit(AddCommentSuccessState()),
+    );
+  }
+
+  FutureOr<void> poetryGetCommentsEvent(
+      PoetryGetCommentsEvent event, Emitter<PoetryState> emit) async {
+    final res = await _getComments(
+      GetCommentsParams(poetryId: event.poetryId),
+    );
+
+    res.fold(
+      (l) => emit(PoetryFailedState(message: l.message)),
+      (r) => emit(FetchCommentsSuccessState(comments: r)),
     );
   }
 }

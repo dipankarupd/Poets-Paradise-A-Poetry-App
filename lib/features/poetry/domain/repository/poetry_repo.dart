@@ -36,4 +36,6 @@ abstract interface class PoetryRepo {
     final String poetry,
     final DateTime createdAt,
   );
+
+  Future<Either<Failure, List<CommentResponse>>> getComments(String poetryId);
 }

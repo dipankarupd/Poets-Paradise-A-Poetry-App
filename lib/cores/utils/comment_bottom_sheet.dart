@@ -23,6 +23,9 @@ void commentBottomSheet({
             } else if (state is AddCommentSuccessState) {
               showSnackbar(context, 'comment uploaded successfully');
               commentController.clear();
+              context
+                  .read<PoetryBloc>()
+                  .add(PoetryGetCommentsEvent(poetryId: poetry.id));
             }
           },
           child: Container(
@@ -64,7 +67,6 @@ void commentBottomSheet({
                     builder: (context, state) {
                       print(state);
                       if (state is FetchCommentsSuccessState) {
-                        print(state.comments);
                         return Expanded(
                           child: ListView.builder(
                             itemCount: state.comments.length,
@@ -77,19 +79,18 @@ void commentBottomSheet({
                                     children: [
                                       Row(
                                         children: [
-                                          // CircleAvatar(
-                                          //   radius: 20,
-                                          //   backgroundImage: NetworkImage(state
-                                          //       .comments[index].author.dp),
-                                          // ),
-                                          // Text(
-                                          //   state.comments[index].author
-                                          //       .username,
-                                          //   style: TextStyle(
-                                          //     color: Colors.black,
-                                          //   ),
-                                          // ),
-                                          // Text(state.comments[index].content)
+                                          CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: NetworkImage(
+                                                state.comments[index].authorDp),
+                                          ),
+                                          Text(
+                                            state.comments[index].authorName,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(state.comments[index].content)
                                         ],
                                       ),
                                     ],

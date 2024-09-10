@@ -127,4 +127,15 @@ class PoetryRepoImpl implements PoetryRepo {
       return left(Failure(message: e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, List<CommentResponse>>> getComments(
+      String poetryId) async {
+    try {
+      final res = await source.getComments(poetryId);
+      return right(res);
+    } on ServerException catch (e) {
+      return left(Failure(message: e.message));
+    }
+  }
 }

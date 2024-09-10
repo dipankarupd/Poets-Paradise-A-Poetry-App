@@ -63,3 +63,9 @@ class PoetryCommentUploadEvent extends PoetryEvent {
       required this.poetry,
       required this.createdAt});
 }
+
+class PoetryGetCommentsEvent extends PoetryEvent {
+  final String poetryId;
+
+  PoetryGetCommentsEvent({required this.poetryId});
+}
