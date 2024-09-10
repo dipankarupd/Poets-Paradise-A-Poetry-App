@@ -8,11 +8,11 @@ class PoetryModel extends Poetry {
     required super.content,
     required super.image,
     required super.categories,
-    required ProfileModel author,
+    required ProfileModel super.author,
     required super.likes,
     required super.comments,
     required super.created_at,
-  }) : super(author: author);
+  });
 
   PoetryModel copyWith({
     String? id,

@@ -5,26 +5,26 @@ class CommentsModel extends Comments {
     required super.id,
     required super.content,
     required super.author,
-    required super.poem,
-    required super.likes,
+    required super.poetry,
     required super.createdAt,
+    required super.likes,
   });
 
   CommentsModel copyWith({
     String? id,
     String? content,
     String? author,
-    String? poem,
-    List<String>? likes,
+    String? poetry,
     DateTime? createdAt,
+    List<String>? likes,
   }) {
     return CommentsModel(
       id: id ?? this.id,
       content: content ?? this.content,
       author: author ?? this.author,
-      poem: poem ?? this.poem,
-      likes: likes ?? this.likes,
+      poetry: poetry ?? this.poetry,
       createdAt: createdAt ?? this.createdAt,
+      likes: likes ?? this.likes,
     );
   }
 
@@ -33,9 +33,9 @@ class CommentsModel extends Comments {
       'id': id,
       'content': content,
       'author': author,
-      'poem': poem,
+      'poetry': poetry,
+      'createdAt': createdAt.millisecondsSinceEpoch,
       'likes': likes,
-      'created_at': createdAt.millisecondsSinceEpoch,
     };
   }
 
@@ -44,9 +44,9 @@ class CommentsModel extends Comments {
       id: map['id'] as String,
       content: map['content'] as String,
       author: map['author'] as String,
-      poem: map['poem'] as String,
+      poetry: map['poetry'] as String,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
       likes: List<String>.from((map['likes'] as List<String>)),
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at'] as int),
     );
   }
 }

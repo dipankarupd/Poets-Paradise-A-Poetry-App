@@ -103,4 +103,28 @@ class PoetryRepoImpl implements PoetryRepo {
       return left(Failure(message: e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, Comments>> uploadComment(
+    String content,
+    String author,
+    String poetry,
+    DateTime createdAt,
+  ) async {
+    try {
+      CommentsModel comment = CommentsModel(
+        id: '',
+        content: content,
+        author: author,
+        poetry: poetry,
+        createdAt: createdAt,
+        likes: [],
+      );
+
+      final res = await source.uploadComment(comment);
+      return right(res);
+    } on ServerException catch (e) {
+      return left(Failure(message: e.message));
+    }
+  }
 }

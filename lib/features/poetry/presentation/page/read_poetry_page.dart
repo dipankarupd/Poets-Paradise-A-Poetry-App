@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:poets_paradise/cores/entities/profile.dart';
 import 'package:poets_paradise/cores/palette/app_palette.dart';
 import 'package:poets_paradise/cores/utils/comment_bottom_sheet.dart';
 import 'package:poets_paradise/cores/utils/format_time.dart';
 import 'package:poets_paradise/features/poetry/domain/entity/poetry.dart';
-import 'package:poets_paradise/features/poetry/presentation/bloc/poetry_bloc.dart';
 import 'package:poets_paradise/features/poetry/presentation/widget/poetry_row_icons.dart';
 
 class ReadPoetryPage extends StatelessWidget {

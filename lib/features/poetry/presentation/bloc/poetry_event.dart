@@ -50,3 +50,16 @@ class PoetrySaveButtonPressEvent extends PoetryEvent {
 
   PoetrySaveButtonPressEvent({required this.poetry});
 }
+
+class PoetryCommentUploadEvent extends PoetryEvent {
+  final String content;
+  final String author;
+  final String poetry;
+  final DateTime createdAt;
+
+  PoetryCommentUploadEvent(
+      {required this.content,
+      required this.author,
+      required this.poetry,
+      required this.createdAt});
+}

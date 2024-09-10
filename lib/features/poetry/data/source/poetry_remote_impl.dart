@@ -181,4 +181,46 @@ class PoetryRemoteImpl implements PoetryRemoteSource {
       throw ServerException(message: e.toString());
     }
   }
+
+  @override
+  Future<CommentsModel> uploadComment(CommentsModel comment) async {
+    try {
+      // upload the data to firebase
+      final res =
+          await firebaseFirestore.collection('comments').add(comment.toMap());
+
+      // update the comment id in the model
+      final updatedComment = comment.copyWith(id: res.id);
+
+      // update the id in firebase to be safe
+      await firebaseFirestore.collection('comments').doc(res.id).update(
+        {'id': res.id},
+      );
+
+      // update the comments list in poetry collection
+      final poetryDoc = await firebaseFirestore
+          .collection('poetries')
+          .doc(comment.poetry)
+          .get();
+
+      if (poetryDoc.exists) {
+        List<String> commentIds =
+            List<String>.from(poetryDoc.data()?['comments'] ?? []);
+
+        commentIds.add(updatedComment.id);
+
+        await firebaseFirestore
+            .collection('poetries')
+            .doc(comment.poetry)
+            .update({'comments': commentIds});
+      } else {
+        throw ServerException(message: 'No such documents exist');
+      }
+
+      // return the response
+      return updatedComment;
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
 }

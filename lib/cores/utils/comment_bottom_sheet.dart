@@ -123,17 +123,16 @@ void commentBottomSheet({
                           labelText: 'Enter the comment',
                           suffix: TextButton(
                             onPressed: () {
-                              // if (key.currentState!.validate()) {
-                              //   context.read<PoetryBloc>().add(
-                              //       // AddCommentEvent(
-                              //       //   author: author,
-                              //       //   poetry: poetry.id,
-                              //       //   createdAt: DateTime.now(),
-                              //       //   content: commentController.text.trim(),
-                              //       //   likes: [],
-                              //       // ),
-                              //       );
-                              // }
+                              if (key.currentState!.validate()) {
+                                context.read<PoetryBloc>().add(
+                                      PoetryCommentUploadEvent(
+                                        content: commentController.text.trim(),
+                                        author: author.userId,
+                                        poetry: poetry.id,
+                                        createdAt: DateTime.now(),
+                                      ),
+                                    );
+                              }
                             },
                             child: const Text('Next'),
                           ),

@@ -12,6 +12,7 @@ import 'package:poets_paradise/features/poetry/domain/usecase/add_to_saved.dart'
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_poetry.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_profiles.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/update_profile.dart';
+import 'package:poets_paradise/features/poetry/domain/usecase/upload_comment.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/upload_poetry.dart';
 
 part 'poetry_event.dart';
@@ -25,6 +26,7 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
   final GetAllPoetry _getAllPoetry;
   final GetAllProfiles _getAllProfiles;
   final UpdateSaved _addToSaved;
+  final UploadComment _uploadComment;
 
   PoetryBloc(
     this._currentUser,
@@ -34,6 +36,7 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
     this._getAllPoetry,
     this._getAllProfiles,
     this._addToSaved,
+    this._uploadComment,
   ) : super(PoetryInitial()) {
     on<PoetryInitialEvent>(poetryInitialEvent);
 
@@ -48,6 +51,8 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
     on<PoetryUploadPoemEvent>(poetryUploadPoemEvent);
 
     on<PoetrySaveButtonPressEvent>(poetrySaveButtonPressEvent);
+
+    on<PoetryCommentUploadEvent>(poetryCommentUploadEvent);
   }
 
   Future<void> poetryInitialEvent(
@@ -177,5 +182,24 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
     );
 
     add(PoetryInitialEvent());
+  }
+
+  FutureOr<void> poetryCommentUploadEvent(
+    PoetryCommentUploadEvent event,
+    Emitter<PoetryState> emit,
+  ) async {
+    final res = await _uploadComment(
+      UploadCommentParams(
+        content: event.content,
+        author: event.author,
+        poetry: event.poetry,
+        createdAt: event.createdAt,
+      ),
+    );
+
+    res.fold(
+      (l) => emit(PoetryFailedState(message: l.message)),
+      (r) => AddCommentSuccessState(),
+    );
   }
 }
