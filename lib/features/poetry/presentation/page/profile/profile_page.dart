@@ -20,7 +20,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     context.read<PoetryBloc>().add(PoetryInitialEvent());
   }
@@ -92,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${state.profile.poetries.length}',
+                            '${widget.profile.poetries.length}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const Text(
@@ -105,7 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${state.profile.followers.length}',
+                            '${widget.profile.followers.length}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const Text(
@@ -118,7 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${state.profile.followers.length}',
+                            '${widget.profile.followers.length}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const Text(
@@ -138,14 +137,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          state.profile.username,
+                          widget.profile.username,
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          state.profile.bio,
+                          widget.profile.bio,
                           style: const TextStyle(fontSize: 16),
                           textAlign: TextAlign.start,
                         ),
@@ -212,25 +211,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   Expanded(
                     child: GridView.builder(
-                        itemCount: state.profile.poetries.length,
+                        itemCount: widget.profile.poetries.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3),
                         itemBuilder: (context, index) {
-                          // return Container(
-                          //   margin: const EdgeInsets.all(4),
-                          //   width: 130,
-                          //   height: 130,
-                          //   color: Colors.green,
-                          //   child: const Center(
-                          //     child: Text('demo'),
-                          //   ),
-                          // );
                           return PoemDisplayCard(
-                            currentUser: state.profile,
-                            poem: state.profile.poetries[index],
+                            currentUser: widget.profile,
+                            poem: widget.profile.poetries[index],
                             isLiked: false,
-                            isSaved: state.profile.savedPoetries
+                            isSaved: widget.profile.savedPoetries
                                 .any((p) => p.id == state.poetries[index].id),
                           );
                         }),
