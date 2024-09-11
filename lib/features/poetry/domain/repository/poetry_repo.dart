@@ -44,4 +44,7 @@ abstract interface class PoetryRepo {
     String? poetry,
     String? comment,
   );
+
+  Future<Either<Failure, Profile>> toggleFollower(
+      String followerId, String followingId);
 }

@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+
 import 'package:poets_paradise/config/routes.dart';
 import 'package:poets_paradise/cores/entities/profile.dart';
 import 'package:poets_paradise/cores/palette/app_palette.dart';
@@ -10,21 +12,23 @@ import 'package:poets_paradise/features/poetry/presentation/page/profile/edit_pr
 import 'package:poets_paradise/features/poetry/presentation/widget/poem_display_card.dart';
 
 class ProfilePage extends StatefulWidget {
-  final Profile profile;
-  const ProfilePage({super.key, required this.profile});
+  Profile profile;
+  ProfilePage({
+    super.key,
+    required this.profile,
+  });
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  bool isFollowing = false;
   @override
   void initState() {
     super.initState();
     context.read<PoetryBloc>().add(PoetryInitialEvent());
   }
-
-  bool isFollowing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +49,22 @@ class _ProfilePageState extends State<ProfilePage> {
             AppRoute.onboarding,
             (Route<dynamic> route) => false,
           );
+        } else if (state is PoetryToggleFollowState) {
+          setState(() {
+            isFollowing = !isFollowing;
+            widget.profile = state.updatedUserProfile;
+          });
+          context.read<PoetryBloc>().add(PoetryInitialEvent());
         }
       },
       builder: (context, state) {
+        print(isFollowing);
         if (state is PoetryInitialState) {
+          final currentUser = state.profile;
+
+          isFollowing = widget.profile.followers.any(
+            (follower) => follower == currentUser.userId,
+          );
           bool isCurrentUser() =>
               (widget.profile.userId == state.profile.userId);
           return Scaffold(
@@ -117,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${widget.profile.followers.length}',
+                            '${widget.profile.following.length}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const Text(
@@ -182,8 +198,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           )
                         : GestureDetector(
                             onTap: () {
-                              isFollowing = !isFollowing;
-                              setState(() {});
+                              context.read<PoetryBloc>().add(
+                                    PoetryToggleFollowEvent(
+                                      follower: currentUser.userId,
+                                      following: widget.profile.userId,
+                                    ),
+                                  );
                             },
                             child: Container(
                               padding: const EdgeInsets.all(8),

@@ -75,6 +75,19 @@ class PoetryToggleLikeEvent extends PoetryEvent {
   final String? poetry;
   final String? comment;
 
-  PoetryToggleLikeEvent(
-      {required this.author, required this.poetry, required this.comment});
+  PoetryToggleLikeEvent({
+    required this.author,
+    required this.poetry,
+    required this.comment,
+  });
+}
+
+class PoetryToggleFollowEvent extends PoetryEvent {
+  final String follower;
+  final String following;
+
+  PoetryToggleFollowEvent({
+    required this.follower,
+    required this.following,
+  });
 }

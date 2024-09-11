@@ -5,7 +5,9 @@ import 'package:poets_paradise/features/poetry/presentation/widget/each_author_r
 
 class AuthorsViewPage extends StatelessWidget {
   final List<Profile> authors;
-  const AuthorsViewPage({super.key, required this.authors});
+  final Profile currentUser;
+  const AuthorsViewPage(
+      {super.key, required this.authors, required this.currentUser});
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +19,17 @@ class AuthorsViewPage extends StatelessWidget {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title: Text('Authors'),
+        title: const Text('Authors'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: ListView.builder(
           itemCount: authors.length,
           itemBuilder: (context, index) {
-            return EachAuthorRow(author: authors[index]);
+            return EachAuthorRow(
+              author: authors[index],
+              currentUser: currentUser,
+            );
           },
         ),
       ),

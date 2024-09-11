@@ -27,4 +27,6 @@ abstract interface class PoetryRemoteSource {
   Future<List<CommentResponseModel>> getComments(String poetryId);
 
   Future<void> updateLike(LikesModel likeModel);
+
+  Future<ProfileModel> toggleFollower(String follower, String following);
 }

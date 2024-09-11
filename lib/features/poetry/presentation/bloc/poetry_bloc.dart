@@ -12,6 +12,7 @@ import 'package:poets_paradise/features/poetry/domain/usecase/add_to_saved.dart'
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_poetry.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/get_all_profiles.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/get_comments.dart';
+import 'package:poets_paradise/features/poetry/domain/usecase/toggle_follow.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/update_like.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/update_profile.dart';
 import 'package:poets_paradise/features/poetry/domain/usecase/upload_comment.dart';
@@ -31,6 +32,7 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
   final UploadComment _uploadComment;
   final GetComments _getComments;
   final UpdateLike _updateLike;
+  final ToggleFollow _toggleFollow;
 
   PoetryBloc(
     this._currentUser,
@@ -43,6 +45,7 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
     this._uploadComment,
     this._getComments,
     this._updateLike,
+    this._toggleFollow,
   ) : super(PoetryInitial()) {
     on<PoetryInitialEvent>(poetryInitialEvent);
 
@@ -62,6 +65,8 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
     on<PoetryGetCommentsEvent>(poetryGetCommentsEvent);
 
     on<PoetryToggleLikeEvent>(poetryToggleLikeEvent);
+
+    on<PoetryToggleFollowEvent>(poetryToggleFollowEvent);
   }
 
   Future<void> poetryInitialEvent(
@@ -242,5 +247,17 @@ class PoetryBloc extends Bloc<PoetryEvent, PoetryState> {
     );
 
     add(PoetryInitialEvent());
+  }
+
+  FutureOr<void> poetryToggleFollowEvent(
+      PoetryToggleFollowEvent event, Emitter<PoetryState> emit) async {
+    //emit(PoetryInitialLoadingState());
+    final res = await _toggleFollow(ToggleFollowParama(
+        follower: event.follower, following: event.following));
+
+    res.fold(
+      (l) => emit(PoetryFailedState(message: l.toString())),
+      (r) => emit(PoetryToggleFollowState(updatedUserProfile: r)),
+    );
   }
 }

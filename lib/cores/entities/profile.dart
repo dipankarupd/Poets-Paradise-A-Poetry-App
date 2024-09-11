@@ -6,8 +6,8 @@ class Profile {
   final String dp;
   final String bio;
   final String email;
-  final List<Profile> followers;
-  final List<Profile> following;
+  final List<String> followers;
+  final List<String> following;
   final List<Poetry> poetries;
   final List<Poetry> savedPoetries;
 

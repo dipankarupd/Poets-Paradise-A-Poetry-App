@@ -158,4 +158,15 @@ class PoetryRepoImpl implements PoetryRepo {
       return left(Failure(message: e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, ProfileModel>> toggleFollower(
+      String followerId, String followingId) async {
+    try {
+      final res = await source.toggleFollower(followerId, followingId);
+      return right(res);
+    } on ServerException catch (e) {
+      return left(Failure(message: e.message));
+    }
+  }
 }

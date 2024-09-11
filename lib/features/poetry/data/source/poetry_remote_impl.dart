@@ -385,4 +385,68 @@ class PoetryRemoteImpl implements PoetryRemoteSource {
         .doc(likeModel.comment)
         .update({'likes': likes});
   }
+
+  @override
+  Future<ProfileModel> toggleFollower(
+      String followerId, String followingId) async {
+    try {
+      late ProfileModel updatedFollowingData;
+      await firebaseFirestore.runTransaction((transaction) async {
+        // Fetch the following user document (who is being followed/unfollowed)
+        final followingDocument = await transaction.get(
+          firebaseFirestore.collection('users').doc(followingId),
+        );
+        if (!followingDocument.exists) {
+          throw ServerException(message: 'Following user does not exist');
+        }
+
+        // Fetch the follower user document (who is following/unfollowing)
+        final followerDocument = await transaction.get(
+          firebaseFirestore.collection('users').doc(followerId),
+        );
+        if (!followerDocument.exists) {
+          throw ServerException(message: 'Follower user does not exist');
+        }
+
+        // Perform read operations first for both follower and following users
+        final followingData = ProfileModel.fromMap(followingDocument.data()!);
+        final followerData = ProfileModel.fromMap(followerDocument.data()!);
+
+        final List<String> followers = List.from(followingData.followers);
+        final List<String> following = List.from(followerData.following);
+
+        // Check if follower already exists, then remove or add (update in-memory)
+        if (followers.contains(followerId)) {
+          followers.remove(followerId); // Unfollow
+        } else {
+          followers.add(followerId); // Follow
+        }
+
+        if (following.contains(followingId)) {
+          following.remove(followingId); // Unfollow
+        } else {
+          following.add(followingId); // Follow
+        }
+
+        // Perform write operations now that all reads are done
+        updatedFollowingData = followingData.copyWith(followers: followers);
+        final updatedFollowerData = followerData.copyWith(following: following);
+
+        // Update the followers of the following user
+        transaction.update(
+          firebaseFirestore.collection('users').doc(followingId),
+          updatedFollowingData.toMap(),
+        );
+
+        // Update the following list of the follower
+        transaction.update(
+          firebaseFirestore.collection('users').doc(followerId),
+          updatedFollowerData.toMap(),
+        );
+      });
+      return updatedFollowingData;
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
 }

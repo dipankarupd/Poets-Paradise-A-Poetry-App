@@ -8,13 +8,11 @@ class ProfileModel extends Profile {
     required super.dp,
     required super.bio,
     required super.email,
-    required List<ProfileModel> followers,
-    required List<ProfileModel> following,
+    required super.followers,
+    required super.following,
     required List<PoetryModel> poetries,
     required List<PoetryModel> savedPoetries,
   }) : super(
-          followers: followers,
-          following: following,
           poetries: poetries,
           savedPoetries: savedPoetries,
         );
@@ -25,8 +23,8 @@ class ProfileModel extends Profile {
     String? dp,
     String? bio,
     String? email,
-    List<ProfileModel>? followers,
-    List<ProfileModel>? following,
+    List<String>? followers,
+    List<String>? following,
     List<PoetryModel>? poetries,
     List<PoetryModel>? savedPoetries,
   }) {
@@ -36,8 +34,8 @@ class ProfileModel extends Profile {
       dp: dp ?? this.dp,
       bio: bio ?? this.bio,
       email: email ?? this.email,
-      followers: followers ?? this.followers.cast<ProfileModel>(),
-      following: following ?? this.following.cast<ProfileModel>(),
+      followers: followers ?? this.followers,
+      following: following ?? this.following,
       poetries: poetries ?? this.poetries.cast<PoetryModel>(),
       savedPoetries: savedPoetries ?? this.savedPoetries.cast<PoetryModel>(),
     );
@@ -50,12 +48,8 @@ class ProfileModel extends Profile {
       'dp': dp,
       'bio': bio,
       'email': email,
-      'followers': followers
-          .map((follower) => follower is ProfileModel ? (follower).toMap() : {})
-          .toList(),
-      'following': following
-          .map((follow) => follow is ProfileModel ? (follow).toMap() : {})
-          .toList(),
+      'followers': followers,
+      'following': following,
       'poetries': poetries
           .map((poetry) => poetry is PoetryModel ? (poetry).toMap() : {})
           .toList(),
@@ -72,12 +66,8 @@ class ProfileModel extends Profile {
       dp: map['dp'] ?? '',
       bio: map['bio'] ?? '',
       email: map['email'] as String,
-      followers: (map['followers'] as List)
-          .map((follower) => ProfileModel.fromMap(follower))
-          .toList(),
-      following: (map['following'] as List)
-          .map((follow) => ProfileModel.fromMap(follow))
-          .toList(),
+      followers: List<String>.from((map['followers'] as List<dynamic>)),
+      following: List<String>.from((map['following'] as List<dynamic>)),
       poetries: (map['poetries'] as List)
           .map((poetry) => PoetryModel.fromMap(poetry))
           .toList(),

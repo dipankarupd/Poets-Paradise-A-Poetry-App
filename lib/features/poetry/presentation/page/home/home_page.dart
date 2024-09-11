@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return BlocBuilder<PoetryBloc, PoetryState>(
       builder: (context, state) {
+        print(state);
         if (state is PoetryInitialLoadingState) {
           return const Scaffold(
             body: Center(
@@ -141,7 +142,10 @@ class _HomePageState extends State<HomePage> {
                           onTap: () {
                             PersistentNavBarNavigator.pushNewScreen(
                               context,
-                              screen: AuthorsViewPage(authors: state.authors),
+                              screen: AuthorsViewPage(
+                                authors: state.authors,
+                                currentUser: state.profile,
+                              ),
                             );
                           },
                           child: const Text(

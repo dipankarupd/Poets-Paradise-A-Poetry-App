@@ -61,3 +61,9 @@ class FetchCommentsSuccessState extends PoetryState {
 }
 
 class PoetryToggleLikeState extends PoetryState {}
+
+class PoetryToggleFollowState extends PoetryState {
+  final Profile updatedUserProfile;
+
+  PoetryToggleFollowState({required this.updatedUserProfile});
+}
