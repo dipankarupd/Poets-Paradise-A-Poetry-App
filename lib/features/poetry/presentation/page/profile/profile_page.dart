@@ -11,6 +11,7 @@ import 'package:poets_paradise/features/poetry/presentation/bloc/poetry_bloc.dar
 import 'package:poets_paradise/features/poetry/presentation/page/profile/edit_profile_page.dart';
 import 'package:poets_paradise/features/poetry/presentation/widget/poem_display_card.dart';
 
+// ignore: must_be_immutable
 class ProfilePage extends StatefulWidget {
   Profile profile;
   ProfilePage({
