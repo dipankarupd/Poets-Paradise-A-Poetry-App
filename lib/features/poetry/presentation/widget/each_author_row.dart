@@ -54,7 +54,8 @@ class _EachAuthorRowState extends State<EachAuthorRow> {
           ),
           BlocListener<PoetryBloc, PoetryState>(
             listener: (context, state) {
-              if (state is PoetryToggleFollowState) {
+              if (state is PoetryToggleFollowState &&
+                  state.updatedUserProfile.userId == widget.author.userId) {
                 setState(() {
                   isFollowed = !isFollowed;
                 });
