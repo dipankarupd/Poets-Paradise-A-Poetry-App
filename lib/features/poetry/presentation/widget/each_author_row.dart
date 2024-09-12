@@ -7,10 +7,10 @@ import 'package:poets_paradise/features/poetry/presentation/bloc/poetry_bloc.dar
 import 'package:poets_paradise/features/poetry/presentation/page/profile/profile_page.dart';
 
 class EachAuthorRow extends StatefulWidget {
-  final Profile author;
+  Profile author;
   final Profile currentUser;
 
-  const EachAuthorRow({
+  EachAuthorRow({
     super.key,
     required this.author,
     required this.currentUser,
@@ -58,6 +58,7 @@ class _EachAuthorRowState extends State<EachAuthorRow> {
                   state.updatedUserProfile.userId == widget.author.userId) {
                 setState(() {
                   isFollowed = !isFollowed;
+                  widget.author = state.updatedUserProfile;
                 });
                 context.read<PoetryBloc>().add(PoetryInitialEvent());
               }

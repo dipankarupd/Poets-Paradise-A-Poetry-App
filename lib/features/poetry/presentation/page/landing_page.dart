@@ -18,7 +18,7 @@ class LandingPage extends StatelessWidget {
         const HomePage(),
         const LikesPage(),
         const AddPage(),
-        const SavePage(),
+        // const SavePage(),
         const SavePage(),
       ];
     }
@@ -35,18 +35,15 @@ class LandingPage extends StatelessWidget {
         inactiveColorPrimary: AppPallete.greyColor,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(
-          Icons.add,
-          color: AppPallete.whiteColor,
-        ),
+        icon: const Icon(Icons.add),
         activeColorPrimary: AppPallete.purpleColor,
         inactiveColorPrimary: AppPallete.greyColor,
       ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.notification_add),
-        activeColorPrimary: AppPallete.purpleColor,
-        inactiveColorPrimary: AppPallete.greyColor,
-      ),
+      // PersistentBottomNavBarItem(
+      //   icon: const Icon(Icons.notification_add),
+      //   activeColorPrimary: AppPallete.purpleColor,
+      //   inactiveColorPrimary: AppPallete.greyColor,
+      // ),
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.bookmark),
         activeColorPrimary: AppPallete.purpleColor,
@@ -57,7 +54,7 @@ class LandingPage extends StatelessWidget {
       context,
       screens: screensList(),
       items: navBarItem,
-      navBarStyle: NavBarStyle.style15,
+      navBarStyle: NavBarStyle.style12,
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(1),
         colorBehindNavBar: AppPallete.backgroundColor,

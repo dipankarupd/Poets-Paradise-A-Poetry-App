@@ -4,6 +4,7 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:poets_paradise/cores/palette/app_palette.dart';
 import 'package:poets_paradise/cores/utils/loader.dart';
 import 'package:poets_paradise/cores/utils/poetry_categories.dart';
+import 'package:poets_paradise/features/poetry/domain/entity/poetry.dart';
 import 'package:poets_paradise/features/poetry/presentation/bloc/poetry_bloc.dart';
 import 'package:poets_paradise/features/poetry/presentation/page/home/all_latest_list.dart';
 import 'package:poets_paradise/features/poetry/presentation/page/profile/all_authors_page.dart';
@@ -21,6 +22,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final TextEditingController searchController = TextEditingController();
+  List<Poetry> filteredPoetries = [];
+  bool isSearching = false;
+
   @override
   void initState() {
     super.initState();
@@ -28,11 +33,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   final categoryList = getCategoriesList();
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PoetryBloc, PoetryState>(
       builder: (context, state) {
-        print(state);
         if (state is PoetryInitialLoadingState) {
           return const Scaffold(
             body: Center(
