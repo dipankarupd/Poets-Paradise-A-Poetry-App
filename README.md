@@ -1,16 +1,39 @@
-# poets_paradise
+# Poets Paradise
 
-A new Flutter project.
+A new Social Media Application for Poetry Enthuciast.
 
-## Getting Started
+## Motive
 
-This project is a starting point for a Flutter application.
+The application is developed using flutter and utilizes firebase for backend purpose.
+The application follows bloc patterns for state management. Clean architecture is followed to adhere to SOLID principles.
 
-A few resources to get you started if this is your first Flutter project:
+## Tech Stacks
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Flutter
+- Firebase
+- Bloc Pattern
+- Clean Architecture
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The application utilizes proper patterns for production level app and uses various packages from pub.dev for making the app build easier.
+
+## You can download the Android apk:
+
+It is totally safe🫠
+[apk download link for android](https://drive.google.com/file/d/1QW1C3-o0fII0Y04p9ABmoog6AurBkNNi/view?usp=sharing)
+
+## Screenshots
+
+<img src="assets/screenshots/1.png" width=200,>
+<img src="assets/screenshots/2.png" width=200,>
+<img src="assets/screenshots/3.png" width=200,>
+<img src="assets/screenshots/4.png" width=200,>
+<img src="assets/screenshots/5.png" width=200,>
+<img src="assets/screenshots/6.png" width=200,>
+<img src="assets/screenshots/7.png" width=200,>
+<img src="assets/screenshots/8.png" width=200,>
+<img src="assets/screenshots/9.png" width=200,>
+<img src="assets/screenshots/10.png" width=200,>
+
+## Demo Video
+
+[Video](https://drive.google.com/file/d/1AQI7u6s8yTJg_sT04zZdBkiRGmLEXG04/view?usp=sharing)
